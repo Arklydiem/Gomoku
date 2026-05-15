@@ -10,15 +10,14 @@
 ---
 
 ## Phase 2 — Java Game Server
-- [ ] Create Spring Boot server
+- [x] Create Spring Boot server
+- [x] Setup Maven project
+- [x] Setup package structure
+- [x] Add custom startup banner
 - [ ] Implement game state management
-- [ ] Implement board representation
+- [ ] Implement Gomoku rules
 - [ ] Implement move validation
-- [ ] Implement capture rules
-- [ ] Implement double-three rule
-- [ ] Implement endgame capture rule
-- [ ] Implement victory conditions
-- [ ] Add game timers
+- [ ] Implement game flow
 - [ ] Expose REST API
 
 ---
