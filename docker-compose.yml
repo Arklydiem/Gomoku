@@ -1,0 +1,10 @@
+services:
+  gomoku-core-api:
+    build:
+      context: ./gomoku-core-api
+      dockerfile: Dockerfile
+    container_name: gomoku-core-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
