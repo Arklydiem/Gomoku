@@ -1,4 +1,5 @@
 services:
+
   gomoku-core-api:
     build:
       context: ./gomoku-core-api
@@ -8,3 +9,13 @@ services:
       - "8081:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+
+  gomoku-web-ang:
+    build:
+      context: ./gomoku-web-ang
+    container_name: gomoku-web-ang
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./gomoku-web-ang:/app
+      - /app/node_modules
