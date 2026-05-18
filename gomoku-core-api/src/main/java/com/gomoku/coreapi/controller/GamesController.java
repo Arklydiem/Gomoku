@@ -1,7 +1,9 @@
 package com.gomoku.coreapi.controller;
 
+import com.gomoku.coreapi.dto.GameDto;
 import com.gomoku.coreapi.dto.GamesUuidsDto;
 import com.gomoku.coreapi.enums.GameType;
+import com.gomoku.coreapi.mapper.GameMapper;
 import com.gomoku.coreapi.model.Game;
 import com.gomoku.coreapi.service.GameService;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +18,29 @@ public class GamesController {
 
     private final GameService gameService;
 
+    private final GameMapper gameMapper;
+
     @GetMapping
-    public GamesUuidsDto getAllGamesId(){
-        GamesUuidsDto gamesUuidsDto = new GamesUuidsDto();
-        gamesUuidsDto.setUuids(gameService.getGamesIds());
-        return gamesUuidsDto;
+    public GamesUuidsDto getAllGamesUuid(){
+        return new GamesUuidsDto(gameService.getGamesUuids());
     }
 
     @PostMapping
-    public Game createGame(@RequestParam(value = "gameType", defaultValue = "PLAYER_VS_PLAYER") final GameType gameType) {
-        return gameService.createGame(gameType);
+    public GameDto createGame(@RequestParam(value = "gameType", defaultValue = "PLAYER_VS_PLAYER") final GameType gameType) {
+        Game game = gameService.createGame(gameType);
+        return gameMapper.entityToDto(game);
     }
 
-    @GetMapping("/{gameId}")
-    public Game getGame(@PathVariable final UUID gameId) {
-        return gameService.getGame(gameId);
+    @GetMapping("/{gameUuid}")
+    public GameDto getGame(@PathVariable final UUID gameUuid) {
+        Game game = gameService.getGame(gameUuid);
+        return gameMapper.entityToDto(game);
     }
 
-    @PostMapping("/{gameId}/join")
-    public Game joinGame(@PathVariable final UUID gameId) {
-        return gameService.joinGame(gameId);
+    @PostMapping("/{gameUuid}/join")
+    public GameDto joinGame(@PathVariable final UUID gameUuid) {
+        Game game = gameService.joinGame(gameUuid);
+        return gameMapper.entityToDto(game);
     }
 
 }

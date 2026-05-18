@@ -29,6 +29,7 @@ public class GameService {
         game.setStatus(GameStatus.CREATED);
         game.setBlackCaptures(0);
         game.setWhiteCaptures(0);
+        game.setGameType(gameType);
 
         switch (gameType) {
             case PLAYER_VS_PLAYER -> playerVersusPlayer(game);
@@ -42,8 +43,8 @@ public class GameService {
         return game;
     }
 
-    public Game joinGame(final UUID gameId) {
-        Game game = getGame(gameId);
+    public Game joinGame(final UUID gameUuid) {
+        Game game = getGame(gameUuid);
 
         if (game.getStatus() != GameStatus.WAITING) {
             throw new IllegalStateException("Game is not waiting for a player");
@@ -63,15 +64,15 @@ public class GameService {
         game.setCurrentTurn(StoneColor.BLACK);
     }
 
-    public List<UUID> getGamesIds() {
+    public List<UUID> getGamesUuids() {
         return games.values()
                 .stream()
                 .map(Game::getUuid)
                 .collect(Collectors.toList());
     }
 
-    public Game getGame(final UUID gameId) {
-        Game game = games.get(gameId);
+    public Game getGame(final UUID gameUuid) {
+        Game game = games.get(gameUuid);
 
         if (game == null) {
             throw new IllegalArgumentException("Game not found");
@@ -90,7 +91,7 @@ public class GameService {
     }
 
     private void playerVersusAi(final Game game) {
-        Player creator = createPlayer(PlayerType.REAL, StoneColor.BLACK, "Player 1");
+        Player creator = createPlayer(PlayerType.REAL, StoneColor.BLACK, "Player");
         Player opponent = createPlayer(PlayerType.AI, StoneColor.WHITE, "AI");
 
         game.setPlayers(List.of(creator, opponent));
@@ -106,7 +107,6 @@ public class GameService {
     private Player createPlayer(final PlayerType type, final StoneColor color, final String name) {
         Player player = new Player();
 
-        player.setUuid(UUID.randomUUID());
         player.setType(type);
         player.setColor(color);
         player.setName(name);

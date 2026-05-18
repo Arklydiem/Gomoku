@@ -1,6 +1,7 @@
 package com.gomoku.coreapi.model;
 
 import com.gomoku.coreapi.enums.GameStatus;
+import com.gomoku.coreapi.enums.GameType;
 import com.gomoku.coreapi.enums.StoneColor;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,12 +38,17 @@ public class Game {
     private GameStatus status;
 
     /**
-     * Number of Captures by Black.
+     * Stone number captured by Black.
      */
     private int blackCaptures;
 
     /**
-     * Number of Captures by White.
+     * Stone number captured by White.
      */
     private int whiteCaptures;
+
+    /**
+     * Game type.
+     */
+    private GameType gameType;
 }
