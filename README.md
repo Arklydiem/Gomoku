@@ -26,10 +26,23 @@ Then log out and log back in.
 From the repository root:
 
 ```bash
-docker compose up --build
+make
 ```
 
-This will start the available services:
+or:
+
+```bash
+make all
+```
+
+This will:
+
+- Build the Docker images
+- Start all services in detached mode
+
+---
+
+## Available services
 
 - `gomoku-core-api` — Spring Boot backend
 - `gomoku-web-ang` — Angular frontend
@@ -55,7 +68,7 @@ http://localhost:8081/swagger-ui/index.html
 ## Stop the project
 
 ```bash
-docker compose down
+make clean
 ```
 
 ---
@@ -63,9 +76,22 @@ docker compose down
 ## Rebuild everything
 
 ```bash
-docker compose build --no-cache
-docker compose up
+make re
 ```
+
+---
+
+## Remove everything
+
+```bash
+make fclean
+```
+
+This removes:
+
+- Containers
+- Volumes
+- Docker images
 
 ---
 
@@ -74,27 +100,25 @@ docker compose up
 Show running containers:
 
 ```bash
-docker ps
+make ps
 ```
 
 Show logs:
 
 ```bash
-docker compose logs -f
+make logs
 ```
 
-Show logs for one service:
+Start backend only:
 
 ```bash
-docker compose logs -f gomoku-core-api
-docker compose logs -f gomoku-web-ang
+make backend
 ```
 
-Restart one service:
+Start frontend only:
 
 ```bash
-docker compose restart gomoku-core-api
-docker compose restart gomoku-web-ang
+make frontend
 ```
 
 ---
