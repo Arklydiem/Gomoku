@@ -3,6 +3,7 @@ NAME = Gomoku
 DOCKER_COMPOSE = docker compose
 
 all:
+	chmod +x $(NAME)
 	./$(NAME)
 
 $(NAME): all
