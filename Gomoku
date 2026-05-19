@@ -1,0 +1,7 @@
+#!/bin/sh
+
+docker compose up --build -d
+
+echo "Gomoku started!"
+echo "Frontend: http://localhost:4200"
+echo "Swagger:  http://localhost:8081/swagger-ui/index.html"

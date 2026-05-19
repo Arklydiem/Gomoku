@@ -1,9 +1,9 @@
-NAME = gomoku
+NAME = Gomoku
 
 DOCKER_COMPOSE = docker compose
 
 all:
-	$(DOCKER_COMPOSE) up --build -d
+	./$(NAME)
 
 $(NAME): all
 
