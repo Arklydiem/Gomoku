@@ -19,3 +19,5 @@ services:
     volumes:
       - ./gomoku-web-ang:/app
       - /app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: "true"

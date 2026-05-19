@@ -9,7 +9,7 @@
 
 ---
 
-## Phase 2 — Java Game Server
+## Phase 2 — Java GameService Server
 - [x] Create Spring Boot server
 - [x] Setup Maven project
 - [x] Setup package structure
