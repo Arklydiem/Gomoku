@@ -1,0 +1,22 @@
+<header>
+  <div class="left">
+    <h1>Gomoku</h1>
+  </div>
+
+  <div class="center">
+    <nav>
+      <app-nav-button [methodToCall]="() => changePage('/home')">
+        Home
+      </app-nav-button>
+      <app-nav-button [methodToCall]="() => changePage('/game/play')">
+        Play
+      </app-nav-button>
+      <app-nav-button [methodToCall]="() => changePage('/game/spectate')">
+        Spectate
+      </app-nav-button>
+    </nav>
+  </div>
+
+  <div class="right">
+  </div>
+</header>
