@@ -14,7 +14,7 @@ export const routes: Routes = [
     component: Home,
   },
   {
-    path: 'game/:mode',
+    path: 'game',
     component: Game,
   },
   {

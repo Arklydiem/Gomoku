@@ -28,7 +28,4 @@ backend:
 frontend:
 	$(DOCKER_COMPOSE) up --build -d gomoku-web-ang
 
-logs:
-	$(DOCKER_COMPOSE) logs -f
-
 .PHONY: all clean fclean re logs ps backend frontend

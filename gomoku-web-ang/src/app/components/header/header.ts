@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { NavButton } from '../nav-button/nav-button';
 
@@ -9,9 +9,20 @@ import { NavButton } from '../nav-button/nav-button';
   styleUrl: './header.scss',
   standalone: true
 })
-export class Header {
+export class Header implements OnInit{
 
   private readonly router = inject(Router);
+  currentPage: string = '/home';
+
+  ngOnInit() {
+    this.router.events.subscribe(() => {
+      this.updateActivePage();
+    });
+  }
+
+  private updateActivePage(): void {
+    this.currentPage = this.router.url;
+  }
 
   changePage(page: string): void {
     this.router.navigate([page]).then(() => {

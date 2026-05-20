@@ -5,14 +5,17 @@
 
   <div class="center">
     <nav>
-      <app-nav-button [methodToCall]="() => changePage('/home')">
+      <app-nav-button [methodToCall]="() => changePage('/home')"
+                      [active]="currentPage === '/home'">
         Home
       </app-nav-button>
-      <app-nav-button [methodToCall]="() => changePage('/game/play')">
-        Play
+      <app-nav-button [methodToCall]="() => changePage('/game')"
+                      [active]="currentPage === '/home'">
+        Game
       </app-nav-button>
-      <app-nav-button [methodToCall]="() => changePage('/game/spectate')">
-        Spectate
+      <app-nav-button [methodToCall]="() => changePage('/scoreboard')"
+                      [active]="currentPage === '/home'">
+        Scoreboard
       </app-nav-button>
     </nav>
   </div>

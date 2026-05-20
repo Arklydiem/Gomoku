@@ -1,15 +1,20 @@
 button {
+
+  min-width: 160px;
+
   background: transparent;
 
   color: var(--text-main);
 
-  border: 1px solid transparent;
+  border-color: var(--accent);
 
   padding: 0.65rem 1rem;
 
   border-radius: 12px;
 
   cursor: pointer;
+
+  font-size: 1rem;
 
   &:hover {
     border-color: var(--accent);
@@ -21,9 +26,5 @@ button {
 
   &:active {
     transform: translateY(0);
-  }
-
-  &.active {
-    text-shadow: 0 0 10px var(--accent);
   }
 }

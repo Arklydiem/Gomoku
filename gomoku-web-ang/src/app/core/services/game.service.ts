@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 
 import { GameResource } from '../resources/game.resource';
+import {Observable} from 'rxjs';
+import {GameModel} from '../../models/game.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,7 @@ export class GameService {
     return this.gameResource.getGame(gameId);
   }
 
-  public createGame() {
+  public createGame(): Observable<GameModel> {
     return this.gameResource.createGame();
   }
 

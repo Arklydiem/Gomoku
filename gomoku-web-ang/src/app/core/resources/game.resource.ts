@@ -1,31 +1,40 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
+import { ApiResource } from '../config/api-resource';
 import { GameModel } from '../../models/game.model';
+import {GamesUuidsModel} from '../../models/games-uuids.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameResource {
+export class GameResource extends ApiResource {
 
-  private readonly http = inject(HttpClient);
-
-  private readonly apiUrl = `${environment.apiUrl}/games`;
-
-  public getGames(): Observable<string[]> {
-    return this.http.get<string[]>(this.apiUrl);
+  public getGames(): Observable<GamesUuidsModel> {
+    return this.request<GamesUuidsModel>({
+      method: 'GET',
+      path: '/games'
+    });
   }
 
-  public getGame(gameId: string): Observable<GameModel> {
-    return this.http.get<GameModel>(`${this.apiUrl}/${gameId}`);
+  public getGame(gameUuid: string): Observable<GameModel> {
+    return this.request<GameModel>(
+      {
+        method: 'GET',
+        path: '/games/{gameUuid}'
+      },
+      { gameUuid }
+    );
   }
 
   public createGame(): Observable<GameModel> {
-    return this.http.post<GameModel>(
-      this.apiUrl,
-      {},
+    return this.request<GameModel>(
+      {
+        method: 'POST',
+        path: '/games'
+      },
+      undefined,
+      null,
       {
         params: {
           gameType: 'PLAYER_VS_PLAYER'
@@ -34,10 +43,14 @@ export class GameResource {
     );
   }
 
-  public joinGame(gameId: string): Observable<GameModel> {
-    return this.http.post<GameModel>(
-      `${this.apiUrl}/${gameId}/join`,
-      {}
+  public joinGame(gameUuid: string): Observable<GameModel> {
+    return this.request<GameModel>(
+      {
+        method: 'POST',
+        path: '/games/{gameUuid}/join'
+      },
+      { gameUuid },
+      null
     );
   }
 }

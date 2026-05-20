@@ -1,29 +1,70 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Button} from '../../components/button/button';
+import {Icon} from '../../components/icon/icon';
+import {TitleCasePipe} from '@angular/common';
+import {Selector} from '../../components/selector/selector';
+import {GameTypeEnum} from '../../shared/enums/game-type.enum';
+import {GameService} from '../../core/services/game.service';
+import {GameModel} from '../../models/game.model';
 
-type GameMode = 'play' | 'spectate';
+type DisplayMode = 'menu' | 'create' | 'join' | 'play' | 'spectate';
 
 @Component({
   selector: 'app-game',
-  imports: [],
+  imports: [
+    Button,
+    Icon,
+    TitleCasePipe,
+    Selector,
+  ],
   templateUrl: './game.html',
   styleUrl: './game.scss',
 })
-export class Game implements OnInit {
+export class Game implements OnInit, OnDestroy {
 
-  private readonly route = inject(ActivatedRoute);
+  displayMode: DisplayMode = 'menu';
 
-  mode!: GameMode;
+  gameTypes: string[] =  Object.values(GameTypeEnum)
+  selectedGameType: string = this.gameTypes[0];
+
+  protected gameService: GameService;
+
+  constructor(gameService: GameService) {
+    this.gameService = gameService;
+  }
 
   ngOnInit(): void {
-    this.mode = this.route.snapshot.paramMap.get('mode') as GameMode;
-
-    if (this.mode === 'play') {
-      console.log('Mode play');
-    }
-
-    if (this.mode === 'spectate') {
-      console.log('Mode spectate');
-    }
   }
+
+  createGame = (): void => {
+    if (this.displayMode !== 'create') {
+      this.displayMode = 'create';
+      return;
+    }
+
+    this.gameService.createGame().subscribe({
+      next: (data: GameModel) => {
+        console.log('Game created successfully:', data);
+        this.displayMode = 'play';
+      },
+      error: (error) => {
+        console.error('Failed to create game:', error);
+      },
+      complete: () => {
+        console.log('Game creation completed');
+      }
+    });
+  };
+
+  joinGame = (): void => {
+    this.displayMode = 'join';
+  };
+
+  spectateGame = (): void => {
+    this.displayMode = 'spectate';
+  };
+
+  ngOnDestroy(): void {
+  }
+
 }

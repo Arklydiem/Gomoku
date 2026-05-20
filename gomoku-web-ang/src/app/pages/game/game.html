@@ -1,1 +1,30 @@
-<p>game works!</p>
+@if (displayMode === 'menu') {
+  <div class="panel menu">
+    <div class="title-div">
+      <span class="center">Menu</span>
+    </div>
+    <div class="content">
+      <app-button [methodToCall]="createGame">Create</app-button>
+      <app-button [methodToCall]="joinGame">Join</app-button>
+      <app-button [methodToCall]="spectateGame">Spectate</app-button>
+    </div>
+  </div>
+} @else {
+  <div class="panel menu">
+    <div class="title-div">
+      <app-icon (click)="displayMode = 'menu'" class="left" name="arrow"></app-icon>
+      <span class="center">{{displayMode | titlecase}}</span>
+    </div>
+    <div class="content">
+      @if (displayMode === 'create') {
+        <app-selector
+          label="Game Type"
+          [choices]="gameTypes"
+          [(selected)]="selectedGameType">
+        </app-selector>
+        <app-button [methodToCall]="createGame">Create</app-button>
+      }
+    </div>
+  </div>
+}
+

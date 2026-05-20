@@ -1,0 +1,19 @@
+<div class="selector-container">
+
+  <label>
+    {{ label }}
+  </label>
+
+  <select
+    [value]="selected"
+    (change)="onSelectionChange($event)">
+
+    @for (choice of choices; track choice) {
+      <option [value]="choice">
+        {{ choice }}
+      </option>
+    }
+
+  </select>
+
+</div>

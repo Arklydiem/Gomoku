@@ -1,0 +1,11 @@
+.panel {
+  background: var(--bg-surface);
+
+  backdrop-filter: blur(10px);
+
+  border: 1px solid var(--border-soft);
+
+  border-radius: var(--radius);
+
+  box-shadow: var(--shadow-soft);
+}
