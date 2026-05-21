@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ApiResource } from '../config/api-resource';
 import { GameModel } from '../../models/game.model';
 import {GamesUuidsModel} from '../../models/games-uuids.model';
+import {GameTypeEnum} from '../../shared/enums/game-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class GameResource extends ApiResource {
     );
   }
 
-  public createGame(): Observable<GameModel> {
+  public createGame(gameType: string): Observable<GameModel> {
     return this.request<GameModel>(
       {
         method: 'POST',
@@ -37,7 +38,7 @@ export class GameResource extends ApiResource {
       null,
       {
         params: {
-          gameType: 'PLAYER_VS_PLAYER'
+          gameType: gameType
         }
       }
     );
@@ -48,6 +49,17 @@ export class GameResource extends ApiResource {
       {
         method: 'POST',
         path: '/games/{gameUuid}/join'
+      },
+      { gameUuid },
+      null
+    );
+  }
+
+  public startGame(gameUuid: string): Observable<GameModel> {
+    return this.request<GameModel>(
+      {
+        method: 'POST',
+        path: '/games/{gameUuid}/start'
       },
       { gameUuid },
       null

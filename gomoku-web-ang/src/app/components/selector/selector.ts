@@ -1,28 +1,40 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { Icon } from '../icon/icon';
+import {EnumFormatPipe} from '../../shared/pipes/eum-format.pipe';
 
 @Component({
   selector: 'app-selector',
-  imports: [],
+  imports: [
+    Icon,
+    EnumFormatPipe
+  ],
   templateUrl: './selector.html',
   styleUrl: './selector.scss',
 })
 export class Selector {
 
   @Input()
-  label!: string;
+  label: string = '';
 
   @Input()
   choices: string[] = [];
 
   @Input()
-  selected!: string;
+  selected: string = '';
 
   @Output()
   selectedChange = new EventEmitter<string>();
 
-  onSelectionChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
+  protected dropdownOpened = false;
 
-    this.selectedChange.emit(value);
+  protected toggleDropdown(): void {
+    this.dropdownOpened = !this.dropdownOpened;
+  }
+
+  protected select(choice: string): void {
+    this.selected = choice;
+    this.selectedChange.emit(choice);
+    this.dropdownOpened = false;
   }
 }

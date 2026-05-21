@@ -1,19 +1,34 @@
 <div class="selector-container">
+  @if (label) {
+    <label>
+      {{ label }}
+    </label>
+  }
 
-  <label>
-    {{ label }}
-  </label>
+  <div class="selector">
+    <button
+      class="selector-button"
+      (click)="toggleDropdown()">
+      <span>
+        {{ selected | enumFormat }}
+      </span>
+      <app-icon
+        name="arrow"
+        [rotation]="dropdownOpened ? -90 : 90">
+      </app-icon>
+    </button>
 
-  <select
-    [value]="selected"
-    (change)="onSelectionChange($event)">
-
-    @for (choice of choices; track choice) {
-      <option [value]="choice">
-        {{ choice }}
-      </option>
+    @if (dropdownOpened) {
+      <div class="dropdown">
+        @for (choice of choices; track choice) {
+          <button
+            class="option"
+            [class.selected]="choice === selected"
+            (click)="select(choice)">
+            {{ choice | enumFormat }}
+          </button>
+        }
+      </div>
     }
-
-  </select>
-
+  </div>
 </div>

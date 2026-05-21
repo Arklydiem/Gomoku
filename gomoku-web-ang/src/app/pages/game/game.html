@@ -1,4 +1,4 @@
-@if (displayMode === 'menu') {
+@if (displayMode() === 'menu') {
   <div class="panel menu">
     <div class="title-div">
       <span class="center">Menu</span>
@@ -9,14 +9,14 @@
       <app-button [methodToCall]="spectateGame">Spectate</app-button>
     </div>
   </div>
-} @else {
+} @else if (displayMode() === 'create' || displayMode() === 'join' || displayMode() === 'spectate') {
   <div class="panel menu">
     <div class="title-div">
-      <app-icon (click)="displayMode = 'menu'" class="left" name="arrow"></app-icon>
-      <span class="center">{{displayMode | titlecase}}</span>
+      <app-icon (click)="displayMode.set('menu')" class="left" name="arrow"></app-icon>
+      <span class="center">{{displayMode() | titlecase}}</span>
     </div>
     <div class="content">
-      @if (displayMode === 'create') {
+      @if (displayMode() === 'create') {
         <app-selector
           label="Game Type"
           [choices]="gameTypes"
@@ -24,6 +24,26 @@
         </app-selector>
         <app-button [methodToCall]="createGame">Create</app-button>
       }
+    </div>
+  </div>
+} @else if (displayMode() === 'play') {
+  <div class="game-container">
+    <div class="panel game">
+<!--      <app-board [board]="board"></app-board>-->
+    </div>
+    <div class="panel info">
+      <span class="status">{{getGameStatus | titlecase}}</span>
+      <div>
+        <app-text-selector [label]="'Game ID :'" [value]="getGameId" [width]="36*6.8"></app-text-selector>
+        @if (getGameStatus === GameStatusEnum.CREATED) {
+
+        }
+      </div>
+      <div>
+        @if (getGameStatus === GameStatusEnum.CREATED) {
+          <app-button [methodToCall]="startGame">Start</app-button>
+        }
+      </div>
     </div>
   </div>
 }
