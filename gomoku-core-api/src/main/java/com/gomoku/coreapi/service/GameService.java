@@ -59,7 +59,9 @@ public class GameService {
         return game;
     }
 
-    public void startGame(final Game game) {
+    public void startGame(final UUID gameUuid) {
+        Game game = getGame(gameUuid);
+
         game.setStatus(GameStatus.IN_PROGRESS);
         game.setCurrentTurn(StoneColor.BLACK);
     }

@@ -43,4 +43,9 @@ public class GamesController {
         return gameMapper.entityToDto(game);
     }
 
+    @PostMapping("/{gameUuid}/start")
+    public void startGame(@PathVariable final UUID gameUuid) {
+        gameService.startGame(gameUuid);
+    }
+
 }
