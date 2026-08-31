@@ -5,7 +5,6 @@ import com.gomoku.coreapi.dto.auth.LoginRequestDto;
 import com.gomoku.coreapi.dto.auth.RegisterRequestDto;
 import com.gomoku.coreapi.exception.InvalidCredentialsException;
 import com.gomoku.coreapi.exception.UserAlreadyExistsException;
-import com.gomoku.coreapi.exception.UserNotFoundException;
 import com.gomoku.coreapi.mapper.UserMapper;
 import com.gomoku.coreapi.model.User;
 import com.gomoku.coreapi.repository.UserRepository;
