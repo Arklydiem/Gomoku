@@ -1,4 +1,4 @@
-package com.gomoku.coreapi.config;
+package com.gomoku.coreapi.configuration;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.Bean;
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class CorsConfig {
+public class CorsConfiguration {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
