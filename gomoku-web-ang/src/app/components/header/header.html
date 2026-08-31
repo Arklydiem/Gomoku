@@ -21,5 +21,23 @@
   </div>
 
   <div class="right">
+    @if (!authService.isLoggedIn()) {
+      <app-nav-button
+        [methodToCall]="() => changePage('/login')"
+        [active]="currentPage === '/login'">
+        Login
+      </app-nav-button>
+
+      <app-nav-button
+        [methodToCall]="() => changePage('/register')"
+        [active]="currentPage === '/register'">
+        Register
+      </app-nav-button>
+    } @else {
+      <app-nav-button
+        [methodToCall]="() => authService.logout()">
+        Logout
+      </app-nav-button>
+    }
   </div>
 </header>

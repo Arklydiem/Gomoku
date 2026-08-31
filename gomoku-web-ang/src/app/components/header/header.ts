@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
-import { NavButton } from '../nav-button/nav-button';
+import {Router} from '@angular/router';
+import {NavButton} from '../nav-button/nav-button';
+import {AuthService} from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,10 @@ export class Header implements OnInit{
 
   private readonly router = inject(Router);
   currentPage: string = '/home';
+
+  constructor(
+    public readonly authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.router.events.subscribe(() => {
