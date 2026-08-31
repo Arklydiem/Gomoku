@@ -23,22 +23,22 @@ public class SecurityConfiguration {
     ) throws Exception {
 
         http
-                .csrf(AbstractHttpConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable)
 
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
-                )
+            .sessionManagement(session ->
+                    session.sessionCreationPolicy(
+                            SessionCreationPolicy.STATELESS
+                    )
+            )
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/login",
-                                "/auth/register"
-                        ).permitAll()
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(
+                            "/auth/login",
+                            "/auth/register"
+                    ).permitAll()
 
-                        .anyRequest().authenticated()
-                );
+                    .anyRequest().authenticated()
+            );
 
         return http.build();
     }
