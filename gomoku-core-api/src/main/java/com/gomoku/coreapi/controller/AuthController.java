@@ -1,21 +1,18 @@
 package com.gomoku.coreapi.controller;
 
-import com.gomoku.coreapi.dto.GameDto;
 import com.gomoku.coreapi.dto.auth.AuthResponse;
 import com.gomoku.coreapi.dto.auth.RegisterRequestDto;
-import com.gomoku.coreapi.mapper.GameMapper;
-import com.gomoku.coreapi.model.Game;
-import com.gomoku.coreapi.repository.UserRepository;
 import com.gomoku.coreapi.service.AuthService;
-import com.gomoku.coreapi.service.GameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.management.DescriptorKey;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
