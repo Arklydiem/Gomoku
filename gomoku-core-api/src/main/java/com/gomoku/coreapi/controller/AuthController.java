@@ -1,6 +1,7 @@
 package com.gomoku.coreapi.controller;
 
 import com.gomoku.coreapi.dto.auth.AuthResponse;
+import com.gomoku.coreapi.dto.auth.LoginRequestDto;
 import com.gomoku.coreapi.dto.auth.RegisterRequestDto;
 import com.gomoku.coreapi.service.AuthService;
 import jakarta.validation.Valid;
@@ -31,8 +32,11 @@ public class AuthController {
                 .body(authService.register(registerRequestDto));
     }
 
-//    @PostMapping("/login")
-//    public GameDto joinGame(@PathVariable final UUID gameUuid) {
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(
+            @Valid @RequestBody final LoginRequestDto loginRequestDto
+    ) {
+        return ResponseEntity.ok(authService.login(loginRequestDto));
+    }
 
 }

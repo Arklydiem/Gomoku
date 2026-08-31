@@ -1,6 +1,7 @@
 package com.gomoku.coreapi.service;
 
 import com.gomoku.coreapi.dto.auth.AuthResponse;
+import com.gomoku.coreapi.dto.auth.LoginRequestDto;
 import com.gomoku.coreapi.dto.auth.RegisterRequestDto;
 import com.gomoku.coreapi.exception.InvalidCredentialsException;
 import com.gomoku.coreapi.exception.UserAlreadyExistsException;
@@ -41,11 +42,20 @@ public class AuthService {
         return generateAuthResponse(user);
     }
 
-    public AuthResponse login(final String username, final String password) {
-        final User user = userRepository.findByUsernameIgnoreCase(username)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    public AuthResponse login(final LoginRequestDto request) {
+        final User user = userRepository
+                .findByUsernameIgnoreCaseOrEmailIgnoreCase(
+                        request.login(),
+                        request.login()
+                )
+                .orElseThrow(() ->
+                        new InvalidCredentialsException("Invalid credentials")
+                );
 
-        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+        if (!passwordEncoder.matches(
+                request.password(),
+                user.getPasswordHash()
+        )) {
             throw new InvalidCredentialsException("Invalid credentials");
         }
 
