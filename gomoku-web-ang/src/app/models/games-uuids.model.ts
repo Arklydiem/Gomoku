@@ -1,7 +1,3 @@
-export class GamesUuidsModel {
+export interface GamesUuidsModel {
   uuids: string[];
-
-  constructor(uuids: string[]) {
-    this.uuids = uuids;
-  }
 }
