@@ -1,0 +1,73 @@
+<app-auth-container
+  title="Login"
+  subtitle="Login to your Gomoku account">
+
+  <form
+    class="auth-form"
+    [formGroup]="form"
+    (ngSubmit)="submit()">
+
+    <div class="field">
+      <label for="login">
+        Username or email
+      </label>
+
+      <input
+        id="login"
+        type="text"
+        formControlName="login"
+        autocomplete="username">
+
+      @if (form.controls.login.touched && form.controls.login.invalid) {
+        <span class="field-error">
+          Username or email is required.
+        </span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="password">
+        Password
+      </label>
+
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        autocomplete="current-password">
+
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <span class="field-error">
+          Password is required.
+        </span>
+      }
+    </div>
+
+    @if (error) {
+      <div class="form-error">
+        {{ error }}
+      </div>
+    }
+
+    <button
+      type="submit"
+      [disabled]="loading">
+
+      @if (loading) {
+        Logging in...
+      } @else {
+        Login
+      }
+
+    </button>
+
+    <p class="auth-switch">
+      Don't have an account?
+      <a routerLink="/auth/register">
+        Register
+      </a>
+    </p>
+
+  </form>
+
+</app-auth-container>

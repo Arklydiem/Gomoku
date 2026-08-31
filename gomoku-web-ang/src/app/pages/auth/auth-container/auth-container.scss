@@ -1,0 +1,38 @@
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: calc(100vh - 80px);
+  padding: 2rem;
+
+  color: BLACK;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 2rem;
+
+  border-radius: 12px;
+
+  background: white;
+
+  box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
+}
+
+.auth-header {
+  margin-bottom: 2rem;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  p {
+    margin-top: 0.5rem;
+    opacity: 0.7;
+  }
+}
