@@ -1,23 +1,69 @@
 services:
 
+  gomoku-postgres:
+    image: postgres:17
+    container_name: gomoku-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-gomoku}
+      POSTGRES_USER: ${POSTGRES_USER:-gomoku}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gomoku}
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - gomoku-postgres-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
   gomoku-core-api:
     build:
       context: ./gomoku-core-api
       dockerfile: Dockerfile
+
     container_name: gomoku-core-api
+
     ports:
       - "8081:8080"
+
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      DB_URL: jdbc:postgresql://gomoku-postgres:5432/${POSTGRES_DB:-gomoku}
+      DB_USERNAME: ${POSTGRES_USER:-gomoku}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-gomoku}
+      JWT_SECRET: ${JWT_SECRET:-qG7vEU9fzTpnPRnDffhrsaB2dOutpoXnewOjFUd4nmd}
+
+    depends_on:
+      gomoku-postgres:
+        condition: service_healthy
+
 
   gomoku-web-ang:
     build:
       context: ./gomoku-web-ang
+
     container_name: gomoku-web-ang
+
     ports:
       - "4200:4200"
+
     volumes:
       - ./gomoku-web-ang:/app
       - /app/node_modules
+
     environment:
       CHOKIDAR_USEPOLLING: "true"
+
+    depends_on:
+      - gomoku-core-api
+
+
+volumes:
+  gomoku-postgres-data:
