@@ -5,16 +5,21 @@
 
   <div class="center">
     <nav>
-      <app-nav-button [methodToCall]="() => changePage('/home')"
-                      [active]="currentPage === '/home'">
+      <app-nav-button
+        [methodToCall]="() => changePage('/home')"
+        [active]="currentPage === '/home'">
         Home
       </app-nav-button>
-      <app-nav-button [methodToCall]="() => changePage('/game')"
-                      [active]="currentPage === '/home'">
+
+      <app-nav-button
+        [methodToCall]="() => changePage('/game')"
+        [active]="currentPage === '/game'">
         Game
       </app-nav-button>
-      <app-nav-button [methodToCall]="() => changePage('/scoreboard')"
-                      [active]="currentPage === '/home'">
+
+      <app-nav-button
+        [methodToCall]="() => changePage('/scoreboard')"
+        [active]="currentPage === '/home'">
         Scoreboard
       </app-nav-button>
     </nav>
@@ -35,9 +40,14 @@
       </app-nav-button>
     } @else {
       <app-nav-button
-        [methodToCall]="() => authService.logout()">
-        Logout
+        [methodToCall]="() => toggleBurgerMenu()">
+        <app-icon name="burger-menu"/>
       </app-nav-button>
+
+      @if (isBurgerMenuOpen) {
+        <app-burger-menu
+          (closed)="closeBurgerMenu()"/>
+      }
     }
   </div>
 </header>
