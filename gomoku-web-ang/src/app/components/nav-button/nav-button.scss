@@ -1,29 +1,67 @@
+:host {
+  display: inline-flex;
+}
+
 button {
+  position: relative;
+
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.5rem 0.9rem;
+
   background: transparent;
 
-  color: var(--text-main);
+  color: var(--text-muted);
 
   border: 1px solid transparent;
-
-  padding: 0.65rem 1rem;
-
-  border-radius: 12px;
+  border-radius: 10px;
 
   cursor: pointer;
 
-  &:hover {
-    border-color: var(--accent);
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
 
-    background: rgba(214, 168, 92, 0.08);
+  &::after {
+    content: '';
 
-    transform: translateY(-1px);
+    position: absolute;
+
+    left: 50%;
+    bottom: 2px;
+
+    width: 0;
+    height: 2px;
+
+    background: var(--accent);
+
+    border-radius: 2px;
+
+    transform: translateX(-50%);
+
+    transition: width 160ms ease;
   }
 
-  &:active {
-    transform: translateY(0);
+  &:hover {
+    color: var(--text-main);
+
+    background: var(--bg-surface-hover);
   }
 
   &.active {
-    text-shadow: 0 0 10px var(--accent);
+    color: var(--text-main);
+
+    &::after {
+      width: 18px;
+    }
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--accent);
   }
 }

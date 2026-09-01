@@ -19,7 +19,7 @@
 
       <app-nav-button
         [methodToCall]="() => changePage('/scoreboard')"
-        [active]="currentPage === '/home'">
+        [active]="currentPage === '/scoreboard'">
         Scoreboard
       </app-nav-button>
     </nav>
@@ -44,10 +44,9 @@
         <app-icon name="burger-menu"/>
       </app-nav-button>
 
-      @if (isBurgerMenuOpen) {
-        <app-burger-menu
-          (closed)="closeBurgerMenu()"/>
-      }
+      <app-burger-menu
+        [open]="isBurgerMenuOpen"
+        (closed)="closeBurgerMenu()"/>
     }
   </div>
 </header>

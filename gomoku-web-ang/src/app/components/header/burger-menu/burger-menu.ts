@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-burger-menu',
@@ -7,6 +7,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './burger-menu.scss',
 })
 export class BurgerMenu {
+
+  @Input()
+  open: boolean = false;
 
   @Output()
   closed = new EventEmitter<void>();

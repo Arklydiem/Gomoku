@@ -1,3 +1,11 @@
-<button (click)="execMethod()" [style.min-width.px]="minWidth">
+<button
+  type="button"
+  (click)="execMethod()"
+  [style.min-width.px]="minWidth"
+  [class.primary]="variant === 'primary'"
+  [class.secondary]="variant === 'secondary'"
+  [class.ghost]="variant === 'ghost'">
+
   <ng-content></ng-content>
+
 </button>

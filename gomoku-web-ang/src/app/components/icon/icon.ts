@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import {IconType} from './icon-type';
 
 @Component({
   selector: 'app-icon',
@@ -9,7 +10,7 @@ import { Component, Input } from '@angular/core';
 export class Icon {
 
   @Input()
-  name!: string;
+  name!: IconType;
 
   @Input()
   size: number = 24;
