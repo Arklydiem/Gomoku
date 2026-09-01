@@ -10,6 +10,7 @@
     <changeSet id="202608311110-create-users" author="argomez">
 
         <createTable tableName="users">
+
             <column name="id"
                     type="BIGINT"
                     autoIncrement="true">
@@ -46,6 +47,7 @@
                     type="TIMESTAMP WITH TIME ZONE">
                 <constraints nullable="false"/>
             </column>
+
         </createTable>
 
         <sql>
@@ -57,6 +59,234 @@
             CREATE UNIQUE INDEX uk_users_email_lower
                 ON users (LOWER(email));
         </sql>
+
+    </changeSet>
+
+    <changeSet id="202609011610-create-games" author="argomez">
+
+        <createTable tableName="games">
+
+            <column name="id"
+                    type="BIGINT"
+                    autoIncrement="true">
+                <constraints
+                        primaryKey="true"
+                        nullable="false"
+                        primaryKeyName="pk_games"/>
+            </column>
+
+            <column name="uuid"
+                    type="UUID">
+                <constraints
+                        nullable="false"
+                        unique="true"
+                        uniqueConstraintName="uk_games_uuid"/>
+            </column>
+
+            <column name="status"
+                    type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="game_type"
+                    type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="current_turn"
+                    type="VARCHAR(20)"/>
+
+            <column name="black_captures"
+                    type="INTEGER"
+                    defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="white_captures"
+                    type="INTEGER"
+                    defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="202609011611-create-game-players" author="argomez">
+
+        <createTable tableName="game_players">
+
+            <column name="id"
+                    type="BIGINT"
+                    autoIncrement="true">
+                <constraints
+                        primaryKey="true"
+                        nullable="false"
+                        primaryKeyName="pk_game_players"/>
+            </column>
+
+            <column name="uuid"
+                    type="UUID">
+                <constraints
+                        nullable="false"
+                        unique="true"
+                        uniqueConstraintName="uk_game_players_uuid"/>
+            </column>
+
+            <column name="game_id"
+                    type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_uuid"
+                    type="UUID"/>
+
+            <column name="name"
+                    type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="type"
+                    type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="color"
+                    type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="fk_game_players_game"
+                baseTableName="game_players"
+                baseColumnNames="game_id"
+                referencedTableName="games"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+
+        <addForeignKeyConstraint
+                constraintName="fk_game_players_user"
+                baseTableName="game_players"
+                baseColumnNames="user_uuid"
+                referencedTableName="users"
+                referencedColumnNames="uuid"
+                onDelete="SET NULL"/>
+
+        <addUniqueConstraint
+                constraintName="uk_game_players_game_color"
+                tableName="game_players"
+                columnNames="game_id,color"/>
+
+        <createIndex
+                indexName="idx_game_players_game_id"
+                tableName="game_players">
+
+            <column name="game_id"/>
+
+        </createIndex>
+
+
+        <createIndex
+                indexName="idx_game_players_user_uuid"
+                tableName="game_players">
+
+            <column name="user_uuid"/>
+
+        </createIndex>
+
+    </changeSet>
+
+    <changeSet id="202609011612-create-game-turns" author="argomez">
+
+        <createTable tableName="game_turns">
+
+            <column name="id"
+                    type="BIGINT"
+                    autoIncrement="true">
+                <constraints
+                        primaryKey="true"
+                        nullable="false"
+                        primaryKeyName="pk_game_turns"/>
+            </column>
+
+            <column name="uuid"
+                    type="UUID">
+                <constraints
+                        nullable="false"
+                        unique="true"
+                        uniqueConstraintName="uk_game_turns_uuid"/>
+            </column>
+
+            <column name="game_id"
+                    type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="player_uuid"
+                    type="UUID">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="turn_number"
+                    type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="suggested_x"
+                    type="INTEGER"/>
+
+            <column name="suggested_y"
+                    type="INTEGER"/>
+
+            <column name="played_x"
+                    type="INTEGER"/>
+
+            <column name="played_y"
+                    type="INTEGER"/>
+
+            <column name="ai_computation_time_ms"
+                    type="BIGINT"/>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="fk_game_turns_game"
+                baseTableName="game_turns"
+                baseColumnNames="game_id"
+                referencedTableName="games"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_game_turns_player"
+                baseTableName="game_turns"
+                baseColumnNames="player_uuid"
+                referencedTableName="game_players"
+                referencedColumnNames="uuid"/>
+
+        <addUniqueConstraint
+                constraintName="uk_game_turns_game_turn_number"
+                tableName="game_turns"
+                columnNames="game_id,turn_number"/>
+
+        <createIndex
+                indexName="idx_game_turns_game_id"
+                tableName="game_turns">
+
+            <column name="game_id"/>
+
+        </createIndex>
+
+        <createIndex
+                indexName="idx_game_turns_player_uuid"
+                tableName="game_turns">
+
+            <column name="player_uuid"/>
+
+        </createIndex>
 
     </changeSet>
 
