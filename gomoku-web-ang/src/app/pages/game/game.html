@@ -1,50 +1,415 @@
-@if (displayMode() === 'menu') {
-  <div class="panel menu">
-    <div class="title-div">
-      <span class="center">Menu</span>
-    </div>
-    <div class="content">
-      <app-button [methodToCall]="createGame">Create</app-button>
-      <app-button [methodToCall]="joinGame">Join</app-button>
-      <app-button [methodToCall]="spectateGame">Spectate</app-button>
-    </div>
-  </div>
-} @else if (displayMode() === 'create' || displayMode() === 'join' || displayMode() === 'spectate') {
-  <div class="panel menu">
-    <div class="title-div">
-      <app-icon (click)="displayMode.set('menu')" class="left" name="arrow"></app-icon>
-      <span class="center">{{displayMode() | titlecase}}</span>
-    </div>
-    <div class="content">
-      @if (displayMode() === 'create') {
-        <app-selector
-          label="Game Type"
-          [choices]="gameTypes"
-          [(selected)]="selectedGameType">
-        </app-selector>
-        <app-button [methodToCall]="createGame">Create</app-button>
-      }
-    </div>
-  </div>
-} @else if (displayMode() === 'play') {
-  <div class="game-container">
-    <div class="panel game">
-<!--      <app-board [board]="board"></app-board>-->
-    </div>
-    <div class="panel info">
-      <span class="status">{{getGameStatus | titlecase}}</span>
-      <div>
-        <app-text-selector [label]="'Game ID :'" [value]="getGameId" [width]="36*6.8"></app-text-selector>
-        @if (getGameStatus === GameStatusEnum.CREATED) {
+<main class="game-page">
+
+  @if (displayMode() === 'menu') {
+
+    <section class="game-intro">
+
+      <header class="intro-header">
+
+        <span class="eyebrow">
+          GAME CENTER
+        </span>
+
+        <h1>
+          Choose how you<br>
+          want to play.
+        </h1>
+
+        <p>
+          Create a new match, join another player
+          or watch an ongoing game.
+        </p>
+
+      </header>
+
+
+      <div class="mode-cards">
+
+        <button
+          type="button"
+          class="mode-card"
+          (click)="openCreate()">
+
+          <span class="mode-number">
+            01
+          </span>
+
+          <div class="mode-content">
+
+            <h2>
+              Create game
+            </h2>
+
+            <p>
+              Configure a new match and
+              invite another player.
+            </p>
+
+          </div>
+
+          <app-icon
+            class="mode-arrow"
+            name="arrow"
+            [rotation]="180"
+            [size]="22">
+          </app-icon>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="mode-card"
+          (click)="openJoin()">
+
+          <span class="mode-number">
+            02
+          </span>
+
+          <div class="mode-content">
+
+            <h2>
+              Join game
+            </h2>
+
+            <p>
+              Enter an existing match
+              and face another player.
+            </p>
+
+          </div>
+
+          <app-icon
+            class="mode-arrow"
+            name="arrow"
+            [rotation]="180"
+            [size]="22">
+          </app-icon>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="mode-card"
+          (click)="openSpectate()">
+
+          <span class="mode-number">
+            03
+          </span>
+
+          <div class="mode-content">
+
+            <h2>
+              Spectate
+            </h2>
+
+            <p>
+              Watch an ongoing match
+              without taking part.
+            </p>
+
+          </div>
+
+          <app-icon
+            class="mode-arrow"
+            name="arrow"
+            [rotation]="180"
+            [size]="22">
+          </app-icon>
+
+        </button>
+
+      </div>
+
+    </section>
+
+  } @else if (
+    displayMode() === 'create' ||
+    displayMode() === 'join' ||
+    displayMode() === 'spectate'
+    ) {
+
+    <section class="mode-shell">
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="backToMenu()">
+
+        <app-icon
+          name="arrow"
+          [size]="18">
+        </app-icon>
+
+        Back to game modes
+
+      </button>
+
+
+      <div class="mode-panel">
+
+        <header class="mode-header">
+
+          <span class="eyebrow">
+            GAME SETUP
+          </span>
+
+          <h1>
+            {{ displayMode() | titlecase }} game
+          </h1>
+
+          @if (displayMode() === 'create') {
+
+            <p>
+              Choose your game configuration
+              before creating the match.
+            </p>
+
+          } @else if (displayMode() === 'join') {
+
+            <p>
+              Find an existing game and join
+              the other player.
+            </p>
+
+          } @else {
+
+            <p>
+              Find an ongoing game
+              and watch the match.
+            </p>
+
+          }
+
+        </header>
+
+
+        @if (displayMode() === 'create') {
+
+          <div class="mode-form">
+
+            <div class="form-section">
+
+              <span class="form-label">
+                GAME CONFIGURATION
+              </span>
+
+              <app-selector
+                label="Game Type"
+                [choices]="gameTypes"
+                [(selected)]="selectedGameType">
+              </app-selector>
+
+            </div>
+
+
+            <div class="form-footer">
+
+              <app-button
+                variant="ghost"
+                [methodToCall]="backToMenu">
+                Cancel
+              </app-button>
+
+              <app-button
+                [methodToCall]="createGame">
+
+                <span class="button-content">
+                  Create game
+
+                  <app-icon
+                    name="arrow"
+                    [rotation]="180"
+                    [size]="18">
+                  </app-icon>
+                </span>
+
+              </app-button>
+
+            </div>
+
+          </div>
+
+        } @else {
+
+          <div class="mode-placeholder">
+
+            <span class="placeholder-number">
+              {{ displayMode() === 'join' ? '02' : '03' }}
+            </span>
+
+            <h2>
+              {{ displayMode() | titlecase }}
+            </h2>
+
+            <p>
+              This section is ready to receive
+              the game selection interface.
+            </p>
+
+          </div>
 
         }
-      </div>
-      <div>
-        @if (getGameStatus === GameStatusEnum.CREATED) {
-          <app-button [methodToCall]="startGame">Start</app-button>
-        }
-      </div>
-    </div>
-  </div>
-}
 
+      </div>
+
+    </section>
+
+  } @else if (displayMode() === 'play') {
+
+    <section class="game-session">
+
+      <header class="session-header">
+
+        <div>
+
+          <span class="eyebrow">
+            CURRENT GAME
+          </span>
+
+          <h1>
+            Gomoku match
+          </h1>
+
+        </div>
+
+
+        <span class="status-badge">
+          <span class="status-dot"></span>
+
+          {{ getGameStatus | titlecase }}
+        </span>
+
+      </header>
+
+
+      <div class="game-layout">
+
+        <section class="board-panel">
+
+          <div class="board-header">
+
+            <div>
+              <span class="board-label">
+                BOARD
+              </span>
+
+              <h2>
+                Match board
+              </h2>
+            </div>
+
+          </div>
+
+
+          <div class="board-stage">
+
+            <!--
+            Quand ton composant Board sera prêt :
+
+            <app-board
+              [board]="board">
+            </app-board>
+            -->
+
+            <div class="board-placeholder">
+
+              <span>
+                GOMOKU
+              </span>
+
+              <p>
+                Game board
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <aside class="game-sidebar">
+
+          <section class="info-card">
+
+            <span class="info-label">
+              GAME STATUS
+            </span>
+
+            <strong>
+              {{ getGameStatus | titlecase }}
+            </strong>
+
+          </section>
+
+
+          <section class="info-card game-id-card">
+
+            <span class="info-label">
+              GAME ID
+            </span>
+
+            <app-text-selector
+              [value]="getGameId"
+              [width]="220">
+            </app-text-selector>
+
+            <p>
+              Share this ID with another
+              player to join the match.
+            </p>
+
+          </section>
+
+
+          @if (
+            getGameStatus === GameStatusEnum.CREATED
+            ) {
+
+            <section class="start-card">
+
+              <span class="info-label">
+                READY?
+              </span>
+
+              <h2>
+                Start the match
+              </h2>
+
+              <p>
+                Start the game once
+                everyone is ready.
+              </p>
+
+              <app-button
+                [methodToCall]="startGame">
+
+                <span class="button-content">
+
+                  Start game
+
+                  <app-icon
+                    name="arrow"
+                    [rotation]="180"
+                    [size]="18">
+                  </app-icon>
+
+                </span>
+
+              </app-button>
+
+            </section>
+
+          }
+
+        </aside>
+
+      </div>
+
+    </section>
+
+  }
+
+</main>
