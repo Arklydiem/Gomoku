@@ -32,7 +32,7 @@ public class PlayerEntity {
     @Setter(AccessLevel.NONE)
     private UUID uuid;
 
-    @Column(name = "user_uuid", nullable = true)
+    @Column(name = "user_uuid")
     private UUID userUuid;
 
     @Column(nullable = false, length = 50)

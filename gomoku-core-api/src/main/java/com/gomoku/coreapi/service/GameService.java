@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,10 +52,9 @@ public class GameService {
     public List<GameDto> getGames() {
 
         List<GameEntity> games = gameRepository.findAll();
-        List<GameDto> gamesDtos = games.stream()
+
+        return games.stream()
                 .map(gameMapper::entityToDto)
                 .toList();
-
-        return gamesDtos;
     }
 }

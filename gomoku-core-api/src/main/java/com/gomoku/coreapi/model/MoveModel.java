@@ -1,10 +1,12 @@
 package com.gomoku.coreapi.model;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 import java.util.Objects;
 
 @Embeddable
+@Getter
 public class MoveModel {
 
     private Integer x;
