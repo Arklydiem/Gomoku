@@ -1,51 +1,122 @@
 .auth-form {
   display: flex;
   flex-direction: column;
+
   gap: 1.25rem;
-  color: BLACK;
 }
 
 .field {
   display: flex;
   flex-direction: column;
+
   gap: 0.5rem;
 
   label {
+    color: var(--text-muted);
+
+    font-size: 0.9rem;
     font-weight: 500;
   }
 
   input {
-    padding: 0.75rem 1rem;
+    min-height: 44px;
 
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 0.7rem 1rem;
 
-    font: inherit;
+    background: rgba(255, 255, 255, 0.04);
+
+    color: var(--text-main);
+
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+
+    outline: none;
+
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+
+    &:hover {
+      border-color: var(--border-strong);
+    }
+
+    &:focus {
+      background: rgba(255, 255, 255, 0.06);
+
+      border-color: var(--accent);
+
+      box-shadow:
+        0 0 0 3px var(--accent-glow);
+    }
   }
 }
 
 .field-error,
 .form-error {
-  color: #c62828;
+  color: var(--danger);
+
   font-size: 0.85rem;
 }
 
-button {
-  padding: 0.8rem 1rem;
+.form-error {
+  padding: 0.75rem 1rem;
 
-  border: 0;
-  border-radius: 6px;
+  background: rgba(224, 108, 117, 0.08);
+
+  border: 1px solid rgba(224, 108, 117, 0.25);
+  border-radius: 10px;
+}
+
+.auth-form > button[type='submit'] {
+  min-height: 44px;
+
+  margin-top: 0.25rem;
+
+  background: var(--accent);
+
+  color: #151515;
+
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+
+  font-weight: 600;
 
   cursor: pointer;
 
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+
+  &:hover:not(:disabled) {
+    background: var(--accent-hover);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+      0 8px 24px var(--accent-glow);
+  }
+
   &:disabled {
-    cursor: default;
-    opacity: 0.6;
+    opacity: 0.5;
+
+    cursor: not-allowed;
   }
 }
 
 .auth-switch {
-  margin: 0;
+  margin: 0.5rem 0 0;
+
+  color: var(--text-muted);
+
   text-align: center;
+
   font-size: 0.9rem;
+
+  a {
+    margin-left: 0.25rem;
+
+    color: var(--accent);
+  }
 }

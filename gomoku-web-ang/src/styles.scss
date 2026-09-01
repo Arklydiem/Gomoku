@@ -1,66 +1,231 @@
-/* You can add global styles to this file, and also import other style files */
-
 @use 'styles/variables';
 @use 'styles/components';
 
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
 :root {
   --bg-main: #0f1115;
+
   --bg-surface: rgba(24, 27, 34, 0.82);
+  --bg-surface-solid: #181b22;
+  --bg-surface-hover: rgba(255, 255, 255, 0.06);
 
   --text-main: #f5f5f5;
   --text-muted: #a8adb7;
 
   --accent: #cf7f3d;
-  --accent-hover: #f0c878;
+  --accent-hover: #e79752;
+  --accent-soft: rgba(207, 127, 61, 0.12);
+  --accent-glow: rgba(207, 127, 61, 0.22);
+
+  --success: #72c596;
+  --danger: #e06c75;
 
   --border-soft: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.2);
 
   --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --shadow-large: 0 24px 64px rgba(0, 0, 0, 0.45);
 
+  --radius-small: 10px;
   --radius: 16px;
+  --radius-large: 24px;
+
+  --header-height: 64px;
 }
 
-* {
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease,
-    transform 160ms ease;
-}
 
-html,
-body {
-  margin: 0 !important;
-  padding: 0 !important;
-
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  background-color: var(--bg-main);
-
-  overflow-x: hidden;
-
-  font-family: Arial, Helvetica, sans-serif;
-
-  user-select: none;
-
-  color: white;
-}
-
-app-root {
-  display: block;
-  min-height: 100vh;
-}
+/* =========================================================
+   GLOBAL
+   ========================================================= */
 
 * {
   box-sizing: border-box;
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+
+  /*
+   * Évite une scrollbar horizontale
+   * lorsque les pages glissent.
+   */
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--bg-main);
+
+  color: var(--text-main);
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
 button {
-  &.wip {
-    opacity: 0.5;
-    cursor: not-allowed;
+  color: inherit;
+}
+
+a {
+  color: var(--accent);
+
+  text-decoration: none;
+
+  transition: color 160ms ease;
+
+  &:hover {
+    color: var(--accent-hover);
+  }
+}
+
+app-root {
+  display: block;
+
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   VIEW TRANSITIONS
+   ========================================================= */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+
+::view-transition-group(page-content) {
+  animation-duration: 300ms;
+
+  animation-timing-function:
+    cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
+  animation-duration: 300ms;
+
+  animation-timing-function:
+    cubic-bezier(0.4, 0, 0.2, 1);
+
+  animation-fill-mode: both;
+
+  /*
+   * Désactive le mélange utilisé
+   * par le cross-fade natif.
+   */
+  mix-blend-mode: normal;
+}
+
+
+/* =========================================================
+   FORWARD
+
+   ========================================================= */
+
+html:active-view-transition-type(forward) {
+
+  &::view-transition-old(page-content) {
+    animation-name: page-out-left;
+  }
+
+  &::view-transition-new(page-content) {
+    animation-name: page-in-right;
+  }
+}
+
+
+/* =========================================================
+   BACKWARD
+
+   ========================================================= */
+
+html:active-view-transition-type(backward) {
+
+  &::view-transition-old(page-content) {
+    animation-name: page-out-right;
+  }
+
+  &::view-transition-new(page-content) {
+    animation-name: page-in-left;
+  }
+}
+
+
+/* =========================================================
+   FORWARD ANIMATIONS
+   ========================================================= */
+
+@keyframes page-out-left {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes page-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================================================
+   BACKWARD ANIMATIONS
+   ========================================================= */
+
+@keyframes page-out-right {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes page-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  ::view-transition-group(page-content),
+  ::view-transition-old(page-content),
+  ::view-transition-new(page-content) {
+    animation-duration: 0.01ms;
   }
 }

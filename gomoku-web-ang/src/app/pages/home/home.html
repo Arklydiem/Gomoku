@@ -1,0 +1,169 @@
+<main class="home">
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <span class="eyebrow">
+        CLASSIC STRATEGY GAME
+      </span>
+
+      <h1>
+        Five stones.<br>
+        One victory.
+      </h1>
+
+      <p class="description">
+        Place your stones, anticipate your opponent
+        and be the first to align five.
+      </p>
+
+      <app-button
+        [methodToCall]="play">
+
+        <span class="button-content">
+          Play now
+
+          <app-icon
+            name="arrow"
+            [rotation]="180"
+            [size]="18">
+          </app-icon>
+        </span>
+
+      </app-button>
+
+    </div>
+
+
+    <div class="board-preview">
+
+      <div class="board">
+
+        @for (row of [0, 1, 2, 3, 4, 5, 6]; track row) {
+          @for (column of [0, 1, 2, 3, 4, 5, 6]; track column) {
+            <div class="cell"></div>
+          }
+        }
+
+        <span class="stone black stone-1"></span>
+        <span class="stone white stone-2"></span>
+        <span class="stone black stone-3"></span>
+        <span class="stone white stone-4"></span>
+        <span class="stone black stone-5"></span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="actions">
+
+    <button
+      type="button"
+      class="action-card panel"
+      (click)="playAgainstAi()">
+
+      <div class="action-content">
+        <h2>Play vs AI</h2>
+
+        <p>
+          Challenge an artificial intelligence
+          and test your strategy.
+        </p>
+      </div>
+
+      <app-icon
+        name="arrow"
+        [rotation]="180">
+      </app-icon>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="action-card panel"
+      (click)="playMultiplayer()">
+
+      <div class="action-content">
+        <h2>Multiplayer</h2>
+
+        <p>
+          Create or join a game
+          and face another player.
+        </p>
+      </div>
+
+      <app-icon
+        name="arrow"
+        [rotation]="180">
+      </app-icon>
+
+    </button>
+
+  </section>
+
+
+  <section class="how-to-play">
+
+    <header class="section-title">
+      <span>HOW TO PLAY</span>
+
+      <h2>
+        Simple rules.<br>
+        Endless strategies.
+      </h2>
+    </header>
+
+
+    <div class="rules">
+
+      <article class="rule">
+        <span class="rule-number">01</span>
+
+        <div>
+          <h3>Place a stone</h3>
+
+          <p>
+            Choose an available position
+            on the board.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="rule">
+        <span class="rule-number">02</span>
+
+        <div>
+          <h3>Build your line</h3>
+
+          <p>
+            Connect stones horizontally,
+            vertically or diagonally.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="rule">
+        <span class="rule-number">03</span>
+
+        <div>
+          <h3>Align five</h3>
+
+          <p>
+            Be the first player
+            to align five stones.
+          </p>
+        </div>
+      </article>
+
+    </div>
+
+  </section>
+
+</main>
