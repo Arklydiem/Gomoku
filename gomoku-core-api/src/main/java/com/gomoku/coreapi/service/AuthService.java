@@ -3,10 +3,10 @@ package com.gomoku.coreapi.service;
 import com.gomoku.coreapi.dto.auth.AuthResponse;
 import com.gomoku.coreapi.dto.auth.LoginRequestDto;
 import com.gomoku.coreapi.dto.auth.RegisterRequestDto;
+import com.gomoku.coreapi.entity.UserEntity;
 import com.gomoku.coreapi.exception.InvalidCredentialsException;
 import com.gomoku.coreapi.exception.UserAlreadyExistsException;
 import com.gomoku.coreapi.mapper.UserMapper;
-import com.gomoku.coreapi.model.User;
 import com.gomoku.coreapi.repository.UserRepository;
 import com.gomoku.coreapi.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -31,18 +31,18 @@ public class AuthService {
 
         checkUsernameAndEmail(request);
 
-        User user = new User();
-        user.setUsername(request.username());
-        user.setEmail(request.email());
-        user.setPasswordHash(passwordEncoder.encode(request.password()));
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(request.username());
+        userEntity.setEmail(request.email());
+        userEntity.setPasswordHash(passwordEncoder.encode(request.password()));
 
-        user = userRepository.save(user);
+        userEntity = userRepository.save(userEntity);
 
-        return generateAuthResponse(user);
+        return generateAuthResponse(userEntity);
     }
 
     public AuthResponse login(final LoginRequestDto request) {
-        final User user = userRepository
+        final UserEntity userEntity = userRepository
                 .findByUsernameIgnoreCaseOrEmailIgnoreCase(
                         request.login(),
                         request.login()
@@ -53,12 +53,12 @@ public class AuthService {
 
         if (!passwordEncoder.matches(
                 request.password(),
-                user.getPasswordHash()
+                userEntity.getPasswordHash()
         )) {
             throw new InvalidCredentialsException("Invalid credentials");
         }
 
-        return generateAuthResponse(user);
+        return generateAuthResponse(userEntity);
     }
 
     private void checkUsernameAndEmail(final RegisterRequestDto request) {
@@ -72,13 +72,13 @@ public class AuthService {
         }
     }
 
-    private AuthResponse generateAuthResponse(final User user) {
+    private AuthResponse generateAuthResponse(final UserEntity userEntity) {
 
-        final String token = jwtService.generateToken(user);
+        final String token = jwtService.generateToken(userEntity);
 
         return new AuthResponse(
                 token,
-                userMapper.toDto(user)
+                userMapper.toDto(userEntity)
         );
     }
 }

@@ -1,6 +1,6 @@
 package com.gomoku.coreapi.security;
 
-import com.gomoku.coreapi.model.User;
+import com.gomoku.coreapi.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -19,7 +19,7 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(final User user) {
+    public String generateToken(final UserEntity userEntity) {
 
         Instant now = Instant.now();
 
@@ -27,8 +27,8 @@ public class JwtService {
                 .issuer("gomoku-core-api")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiration))
-                .subject(user.getUuid().toString())
-                .claim("username", user.getUsername())
+                .subject(userEntity.getUuid().toString())
+                .claim("username", userEntity.getUsername())
                 .build();
 
         return jwtEncoder

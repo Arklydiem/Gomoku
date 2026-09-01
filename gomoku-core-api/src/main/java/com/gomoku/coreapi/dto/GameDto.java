@@ -11,9 +11,10 @@ public record GameDto(
         UUID uuid,
         BoardDto board,
         List<PlayerDto> players,
+        List<GameTurnDto> turns,
         StoneColor currentTurn,
         GameStatus status,
         int blackCaptures,
         int whiteCaptures,
         GameType gameType
-) {}
+) { }

@@ -1,20 +1,20 @@
 package com.gomoku.coreapi.repository;
 
-import com.gomoku.coreapi.model.User;
+import com.gomoku.coreapi.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    Optional<User> findByUuid(UUID uuid);
+    Optional<UserEntity> findByUuid(UUID uuid);
 
-    Optional<User> findByUsernameIgnoreCase(String username);
+    Optional<UserEntity> findByUsernameIgnoreCase(String username);
 
-    Optional<User> findByEmailIgnoreCase(String email);
+    Optional<UserEntity> findByEmailIgnoreCase(String email);
 
-    Optional<User> findByUsernameIgnoreCaseOrEmailIgnoreCase(String username, String email);
+    Optional<UserEntity> findByUsernameIgnoreCaseOrEmailIgnoreCase(String username, String email);
 
     boolean existsByUsernameIgnoreCase(String username);
 

@@ -1,13 +1,11 @@
 package com.gomoku.coreapi.mapper;
 
 import com.gomoku.coreapi.dto.PlayerDto;
-import com.gomoku.coreapi.model.Player;
+import com.gomoku.coreapi.entity.game.PlayerEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface PlayerMapper {
 
-    PlayerDto entityToDto(Player entity);
-
-    Player dtoToEntity(PlayerDto dto);
+    PlayerDto entityToDto(PlayerEntity entity);
 }

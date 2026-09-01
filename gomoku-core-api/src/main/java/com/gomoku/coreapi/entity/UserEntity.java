@@ -1,4 +1,4 @@
-package com.gomoku.coreapi.model;
+package com.gomoku.coreapi.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,9 +12,9 @@ import java.util.UUID;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class UserEntity {
 
-    public User() {
+    public UserEntity() {
         this.uuid = UUID.randomUUID();
         this.createdAt = Instant.now();
     }
