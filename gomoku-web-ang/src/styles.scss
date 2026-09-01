@@ -229,3 +229,18 @@ html:active-view-transition-type(backward) {
     animation-duration: 0.01ms;
   }
 }
+
+* {
+  user-select: none;
+}
+
+.selectable,
+.selectable * {
+  user-select: text;
+}
+
+input,
+textarea,
+[contenteditable='true'] {
+  user-select: text;
+}
