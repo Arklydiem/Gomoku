@@ -7,7 +7,7 @@ import {Component, Input} from '@angular/core';
   styleUrl: './nav-button.scss',
 })
 export class NavButton {
-  @Input()  methodToCall!: () => void;
+  @Input()  methodToCall!: () => void[];
   @Input()  active: boolean = false;
 
 }

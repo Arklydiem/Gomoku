@@ -6,19 +6,19 @@
   <div class="center">
     <nav>
       <app-nav-button
-        [methodToCall]="() => changePage('/home')"
+        [methodToCall]="() => [changePage('/home')]"
         [active]="currentPage === '/home'">
         Home
       </app-nav-button>
 
       <app-nav-button
-        [methodToCall]="() => changePage('/game')"
+        [methodToCall]="() => [changePage('/game')]"
         [active]="currentPage === '/game'">
         Game
       </app-nav-button>
 
       <app-nav-button
-        [methodToCall]="() => changePage('/scoreboard')"
+        [methodToCall]="() => [changePage('/scoreboard')]"
         [active]="currentPage === '/scoreboard'">
         Scoreboard
       </app-nav-button>
@@ -28,19 +28,19 @@
   <div class="right">
     @if (!authService.isLoggedIn()) {
       <app-nav-button
-        [methodToCall]="() => changePage('/auth/login')"
+        [methodToCall]="() => [changePage('/auth/login')]"
         [active]="currentPage === '/auth/login'">
         Login
       </app-nav-button>
 
       <app-nav-button
-        [methodToCall]="() => changePage('/auth/register')"
+        [methodToCall]="() => [changePage('/auth/register')]"
         [active]="currentPage === '/auth/register'">
         Register
       </app-nav-button>
     } @else {
       <app-nav-button
-        [methodToCall]="() => toggleBurgerMenu()">
+        [methodToCall]="() => [toggleBurgerMenu()]">
         <app-icon name="burger-menu"/>
       </app-nav-button>
 
