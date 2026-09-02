@@ -61,6 +61,8 @@ services:
     environment:
       CHOKIDAR_USEPOLLING: "true"
 
+      API_PROXY_TARGET: "http://gomoku-core-api:8080"
+
     depends_on:
       - gomoku-core-api
 
