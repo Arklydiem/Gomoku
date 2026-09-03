@@ -1,6 +1,6 @@
 package com.gomoku.coreapi.controller;
 
-import com.gomoku.coreapi.dto.GameDto;
+import com.gomoku.coreapi.dto.game.GameDto;
 import com.gomoku.coreapi.enums.GameType;
 import com.gomoku.coreapi.service.GameService;
 import lombok.RequiredArgsConstructor;

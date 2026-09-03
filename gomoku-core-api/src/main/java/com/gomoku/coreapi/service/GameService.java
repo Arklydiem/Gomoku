@@ -1,6 +1,6 @@
 package com.gomoku.coreapi.service;
 
-import com.gomoku.coreapi.dto.GameDto;
+import com.gomoku.coreapi.dto.game.GameDto;
 import com.gomoku.coreapi.entity.game.GameEntity;
 import com.gomoku.coreapi.enums.GameStatus;
 import com.gomoku.coreapi.enums.GameType;

@@ -1,4 +1,4 @@
-package com.gomoku.coreapi.dto;
+package com.gomoku.coreapi.dto.game;
 
 public record MoveDto(
         int x,

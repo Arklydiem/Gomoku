@@ -1,4 +1,4 @@
-package com.gomoku.coreapi.dto;
+package com.gomoku.coreapi.dto.game;
 
 import java.util.List;
 import java.util.UUID;

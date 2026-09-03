@@ -1,4 +1,4 @@
-package com.gomoku.coreapi.dto;
+package com.gomoku.coreapi.dto.game;
 
 import com.gomoku.coreapi.enums.PlayerType;
 import com.gomoku.coreapi.enums.StoneColor;

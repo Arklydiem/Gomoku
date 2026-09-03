@@ -1,6 +1,6 @@
 package com.gomoku.coreapi.mapper;
 
-import com.gomoku.coreapi.dto.GameTurnDto;
+import com.gomoku.coreapi.dto.game.GameTurnDto;
 import com.gomoku.coreapi.entity.game.GameTurnEntity;
 import org.mapstruct.Mapper;
 
