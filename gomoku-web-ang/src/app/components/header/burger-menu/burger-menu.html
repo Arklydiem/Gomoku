@@ -8,7 +8,7 @@
     (click)="$event.stopPropagation()">
 
     <app-nav-button
-      [methodToCall]="() => [authService.logout(), close()]">
+      [methodToCall]="() => logoutAndClose()">
       Logout
     </app-nav-button>
 

@@ -12,7 +12,7 @@ import {AuthService} from '../../../core/services/auth.service';
 })
 export class BurgerMenu {
 
-  authService: AuthService;
+  private authService: AuthService;
 
   constructor(authService: AuthService) {
     this.authService = authService;
@@ -23,6 +23,11 @@ export class BurgerMenu {
 
   @Output()
   closed = new EventEmitter<void>();
+
+  logoutAndClose(): void {
+    this.authService.logout();
+    this.close();
+  }
 
   close(): void {
     this.closed.emit();
