@@ -32,6 +32,7 @@ services:
 
     ports:
       - "8081:8080"
+      - "5005:5005"
 
     environment:
       SPRING_PROFILES_ACTIVE: docker
@@ -39,6 +40,9 @@ services:
       DB_USERNAME: ${POSTGRES_USER:-gomoku}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-gomoku}
       JWT_SECRET: ${JWT_SECRET:-qG7vEU9fzTpnPRnDffhrsaB2dOutpoXnewOjFUd4nmd}
+
+      JAVA_TOOL_OPTIONS: >-
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
 
     depends_on:
       gomoku-postgres:
