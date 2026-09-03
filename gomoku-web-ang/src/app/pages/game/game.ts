@@ -1,21 +1,17 @@
-import {
-  Component,
-  signal,
-} from '@angular/core';
+import {Component, signal,} from '@angular/core';
 
 import {GameHub} from './game-hub/game-hub';
 
-import {
-  GameAccessMode,
-  GameHubSelection,
-} from './game-hub/game-hub.types';
+import {GameAccessMode, GameHubSelection,} from './game-hub/game-hub.types';
 
 import {GameModel} from '../../models/game.model';
+import {GameMatch} from './game-match/game-match';
 
 @Component({
   selector: 'app-game',
   imports: [
     GameHub,
+    GameMatch,
   ],
   templateUrl: './game.html',
   styleUrl: './game.scss',
@@ -31,13 +27,15 @@ export class Game {
   openGame(
     selection: GameHubSelection,
   ): void {
+
     this.selectedGame.set(
-      selection.game
+      selection.game,
     );
 
     this.accessMode.set(
-      selection.accessMode
+      selection.accessMode,
     );
+
   }
 
   closeGame(): void {

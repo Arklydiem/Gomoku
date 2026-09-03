@@ -55,12 +55,15 @@ export class GameHub {
     this.openedDialog.set(null);
   }
 
-  selectPlayerGame(game: GameModel): void {
-    this.selectGame(game, 'player');
-  }
-
   selectSpectatorGame(game: GameModel): void {
     this.selectGame(game, 'spectator');
+  }
+
+  selectPlayerGame(game: GameModel): void {
+    this.selectGame(
+      game,
+      'player',
+    );
   }
 
   private selectGame(

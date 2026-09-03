@@ -61,6 +61,8 @@ export class GameCreateDialog {
   };
 
   createGame = (): void => {
+    console.debug('[CREATE DIALOG] createGame called');
+
     if (this.loading()) {
       return;
     }
@@ -73,12 +75,13 @@ export class GameCreateDialog {
       .subscribe({
         next: (game: GameModel) => {
           this.loading.set(false);
+
           this.gameCreated.emit(game);
         },
 
         error: (error) => {
           console.error(
-            'Failed to create game:',
+            '[CREATE DIALOG] API error:',
             error,
           );
 
@@ -88,6 +91,8 @@ export class GameCreateDialog {
             'Unable to create the game.',
           );
         },
+
+        complete: () => {},
       });
   };
 }

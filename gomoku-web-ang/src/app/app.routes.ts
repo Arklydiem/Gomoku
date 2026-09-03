@@ -1,9 +1,9 @@
 import {Routes} from '@angular/router';
 
 import {Home} from './pages/home/home';
-import {GameHub} from './pages/game/game-hub/game-hub';
 import {Login} from './pages/auth/login/login';
 import {Register} from './pages/auth/register/register';
+import {Game} from './pages/game/game';
 
 export const routes: Routes = [
   {
@@ -22,7 +22,7 @@ export const routes: Routes = [
 
   {
     path: 'game',
-    component: GameHub,
+    component: Game,
     data: {
       pageOrder: 1,
     },

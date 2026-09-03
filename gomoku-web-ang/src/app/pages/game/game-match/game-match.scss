@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.game-intro {
+  width:
+    min(100%, 1050px);
+
+  min-height:
+    calc(100vh - var(--header-height) - 10rem);
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  margin:
+    0 auto;
+}
