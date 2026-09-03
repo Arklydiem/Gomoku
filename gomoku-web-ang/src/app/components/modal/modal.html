@@ -1,0 +1,83 @@
+<div
+  class="modal-backdrop"
+  (mousedown)="onBackdropMouseDown($event)">
+
+  <section
+    #modalDialog
+    class="modal-dialog"
+    [class.modal-dialog--scrollable]="scrollable"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="title"
+    [style.min-width]="dialogMinWidth"
+    [style.max-width]="dialogMaxWidth"
+    [style.min-height]="dialogMinHeight"
+    [style.max-height]="dialogMaxHeight"
+    tabindex="-1">
+
+
+    <button
+      type="button"
+      class="modal-close"
+      aria-label="Close dialog"
+      (click)="close()">
+
+      <app-icon
+        name="close"
+        [size]="20">
+      </app-icon>
+
+    </button>
+
+
+    <header class="modal-header">
+
+      @if (eyebrow) {
+
+        <span class="modal-eyebrow">
+          {{ eyebrow }}
+        </span>
+
+      }
+
+
+      @if (title) {
+
+        <h2>
+          {{ title }}
+        </h2>
+
+      }
+
+
+      @if (description) {
+
+        <p>
+          {{ description }}
+        </p>
+
+      }
+
+    </header>
+
+
+    <div class="modal-body">
+
+      <ng-content
+        select="[modal-body]">
+      </ng-content>
+
+    </div>
+
+
+    <footer class="modal-footer">
+
+      <ng-content
+        select="[modal-footer]">
+      </ng-content>
+
+    </footer>
+
+  </section>
+
+</div>
