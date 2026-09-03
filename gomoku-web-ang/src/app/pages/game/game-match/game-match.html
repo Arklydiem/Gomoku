@@ -1,4 +1,115 @@
-<section class="game-intro">
-  TEST
-</section>
+<section class="game-match">
 
+  <header class="game-header">
+
+    <div>
+      <span class="eyebrow">
+        MATCH
+      </span>
+
+      <h1>
+        Gomoku
+      </h1>
+    </div>
+
+
+    <div class="game-meta">
+
+      <span>
+        {{ game().status }}
+      </span>
+
+      @if (isSpectator()) {
+        <span class="spectator-badge">
+          Spectator
+        </span>
+      }
+
+    </div>
+
+  </header>
+
+
+  <div class="game-layout">
+
+    <aside class="player-panel">
+
+      <div class="player-card">
+
+        <span class="stone black"></span>
+
+        <div>
+          <span class="player-label">
+            BLACK
+          </span>
+
+          <strong>
+            Player 1
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="game-stat">
+
+        <span>
+          Captures
+        </span>
+
+        <strong>
+          {{ game().blackCaptures }}
+        </strong>
+
+      </div>
+
+    </aside>
+
+
+    <main class="board-container">
+
+      <!-- futur GameBoard -->
+
+      <div class="board-placeholder">
+        GAME BOARD
+      </div>
+
+    </main>
+
+
+    <aside class="player-panel">
+
+      <div class="player-card">
+
+        <span class="stone white"></span>
+
+        <div>
+          <span class="player-label">
+            WHITE
+          </span>
+
+          <strong>
+            Player 2
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="game-stat">
+
+        <span>
+          Captures
+        </span>
+
+        <strong>
+          {{ game().whiteCaptures }}
+        </strong>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</section>

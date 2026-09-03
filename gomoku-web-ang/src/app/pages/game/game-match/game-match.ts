@@ -1,4 +1,10 @@
-import {Component} from '@angular/core';
+import {
+  Component,
+  input,
+} from '@angular/core';
+
+import {GameModel} from '../../../models/game.model';
+import {GameAccessMode} from '../game-hub/game-hub.types';
 
 @Component({
   selector: 'app-game-match',
@@ -8,4 +14,13 @@ import {Component} from '@angular/core';
 })
 export class GameMatch {
 
+  readonly game =
+    input.required<GameModel>();
+
+  readonly accessMode =
+    input.required<GameAccessMode>();
+
+
+  readonly isSpectator = () =>
+    this.accessMode() === 'spectator';
 }

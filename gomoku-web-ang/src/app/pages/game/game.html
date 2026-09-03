@@ -8,7 +8,10 @@
 
   } @else {
 
-    <app-game-match></app-game-match>
+    <app-game-match
+      [game]="selectedGame()!"
+      [accessMode]="accessMode()!">
+    </app-game-match>
 
   }
 
