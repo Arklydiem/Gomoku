@@ -1,130 +1,163 @@
 :host {
   display: block;
+  width: 100%;
 }
 
 .game-match {
   width: 100%;
 }
 
+/* =========================
+   Header
+   ========================= */
+
 .game-header {
+  min-height: 48px;
+
   display: flex;
-
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 
-  margin-bottom: 2rem;
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.game-title {
+  display: flex;
+  align-items: center;
+
+  gap: 1rem;
 
   h1 {
-    margin:
-      0.5rem 0 0;
+    margin: 0;
 
-    font-size:
-      clamp(2.5rem, 5vw, 4rem);
+    color: var(--text-main);
 
-    letter-spacing:
-      -0.12rem;
+    font-size: 1.6rem;
+    line-height: 1;
+
+    letter-spacing: -0.04rem;
   }
 }
 
 .eyebrow {
-  color:
-    var(--accent);
+  color: var(--accent);
 
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   font-weight: 600;
 
-  letter-spacing:
-    0.18rem;
+  letter-spacing: 0.14rem;
 }
 
 .game-meta {
   display: flex;
-
   align-items: center;
 
   gap: 0.75rem;
 
-  color:
-    var(--text-muted);
+  color: var(--text-muted);
+
+  font-size: 0.85rem;
+}
+
+.game-status {
+  padding: 0.35rem 0.6rem;
+
+  background: var(--bg-surface-solid);
+
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
 }
 
 .spectator-badge {
-  padding:
-    0.4rem 0.7rem;
+  padding: 0.35rem 0.6rem;
 
-  color:
-    var(--accent);
+  color: var(--accent);
 
-  border:
-    1px solid var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
 
-  border-radius:
-    999px;
-
-  font-size:
-    0.75rem;
+  font-size: 0.75rem;
 }
 
+/* =========================
+   Layout
+   ========================= */
+
 .game-layout {
+  width: 100%;
+
   display: grid;
 
   grid-template-columns:
-    minmax(180px, 240px)
+    minmax(160px, 210px)
     minmax(0, 1fr)
-    minmax(180px, 240px);
+    minmax(160px, 210px);
 
-  gap: 2rem;
+  gap: 1.25rem;
 
   align-items: start;
 }
+
+/* =========================
+   Players
+   ========================= */
 
 .player-panel {
   display: flex;
   flex-direction: column;
 
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .player-card,
 .game-stat {
-  padding: 1rem;
+  background: var(--bg-surface-solid);
 
-  background:
-    var(--bg-surface-solid);
-
-  border:
-    1px solid var(--border-soft);
-
-  border-radius:
-    var(--radius-large);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-large);
 }
 
 .player-card {
   display: flex;
-
   align-items: center;
 
-  gap: 0.9rem;
+  gap: 0.85rem;
+
+  padding: 0.9rem;
+}
+
+.player-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.2rem;
+
+  strong {
+    overflow: hidden;
+
+    color: var(--text-main);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .player-label {
-  display: block;
+  color: var(--text-muted);
 
-  margin-bottom: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 600;
 
-  color:
-    var(--text-muted);
-
-  font-size:
-    0.7rem;
-
-  letter-spacing:
-    0.1rem;
+  letter-spacing: 0.1rem;
 }
 
 .stone {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 
   flex-shrink: 0;
 
@@ -132,66 +165,146 @@
 }
 
 .stone.black {
-  background:
-    #111;
+  background: #111;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
 .stone.white {
-  background:
-    #eee;
+  background: #eee;
 
-  border:
-    1px solid #aaa;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    0 2px 5px rgba(0, 0, 0, 0.18);
 }
 
 .game-stat {
   display: flex;
-
   justify-content: space-between;
   align-items: center;
 
-  color:
-    var(--text-muted);
+  padding: 0.8rem 0.9rem;
+
+  color: var(--text-muted);
+
+  font-size: 0.85rem;
 
   strong {
-    color:
-      var(--text-main);
+    color: var(--text-main);
+
+    font-size: 1rem;
   }
 }
 
+/* =========================
+   Board
+   ========================= */
+
 .board-container {
   width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .board-placeholder {
-  aspect-ratio: 1;
+  width: min(
+    100%,
+    calc(100vh - var(--header-height) - 7rem)
+  );
 
-  width: 100%;
+  aspect-ratio: 1;
 
   display: grid;
   place-items: center;
 
-  background:
-    var(--bg-surface-solid);
+  background: var(--bg-surface-solid);
 
-  border:
-    1px solid var(--border-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-large);
 
-  border-radius:
-    var(--radius-large);
+  color: var(--text-muted);
 
-  color:
-    var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  letter-spacing: 0.12rem;
+
+  box-shadow: var(--shadow-large);
 }
 
-@media (max-width: 900px) {
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 1000px) {
 
   .game-layout {
     grid-template-columns:
-      1fr;
+      minmax(140px, 180px)
+      minmax(0, 1fr)
+      minmax(140px, 180px);
+
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 800px) {
+
+  .game-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .game-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .board-container {
+    order: 1;
   }
 
   .player-panel {
+    width: 100%;
+
     flex-direction: row;
+
+    order: 2;
+  }
+
+  .player-card,
+  .game-stat {
+    flex: 1;
+  }
+
+  .board-placeholder {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .game-title {
+
+    h1 {
+      font-size: 1.4rem;
+    }
+  }
+
+  .game-meta {
+    flex-wrap: wrap;
+  }
+
+  .player-panel {
+    flex-direction: column;
   }
 }

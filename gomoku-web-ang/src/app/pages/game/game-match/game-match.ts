@@ -20,7 +20,6 @@ export class GameMatch {
   readonly accessMode =
     input.required<GameAccessMode>();
 
-
   readonly isSpectator = () =>
     this.accessMode() === 'spectator';
 }
