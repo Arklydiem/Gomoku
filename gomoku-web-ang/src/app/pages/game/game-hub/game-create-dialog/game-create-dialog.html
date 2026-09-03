@@ -1,0 +1,84 @@
+<app-modal
+  eyebrow="GAME SETUP"
+  title="Create game"
+  description="Choose the match configuration before creating a new game."
+
+  dialogMinWidth="480px"
+  dialogMaxWidth="620px"
+
+  dialogMinHeight="460px"
+  dialogMaxHeight="650px"
+
+  [closeOnBackdrop]="!loading()"
+  (closed)="close()">
+
+
+  <div
+    modal-body
+    class="dialog-body">
+
+    <span class="form-label">
+      GAME CONFIGURATION
+    </span>
+
+
+    <app-selector
+      label="Game Type"
+      [choices]="gameTypes"
+      [selected]="selectedGameType()"
+      (selectedChange)="selectedGameType.set($event)">
+    </app-selector>
+
+
+    @if (errorMessage()) {
+
+      <p class="form-error">
+        {{ errorMessage() }}
+      </p>
+
+    }
+
+  </div>
+
+
+  <div
+    modal-footer
+    class="dialog-actions">
+
+    <app-button
+      variant="ghost"
+      [methodToCall]="close">
+
+      Cancel
+
+    </app-button>
+
+
+    <app-button
+      [methodToCall]="createGame">
+
+    <span class="button-content">
+
+      @if (loading()) {
+
+        Creating...
+
+      } @else {
+
+        Create game
+
+        <app-icon
+          name="arrow"
+          [rotation]="180"
+          [size]="18">
+        </app-icon>
+
+      }
+
+    </span>
+
+    </app-button>
+
+  </div>
+
+</app-modal>

@@ -1,0 +1,81 @@
+.dialog-body {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.85rem;
+}
+
+.form-label {
+  color:
+    var(--text-muted);
+
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  letter-spacing:
+    0.14rem;
+}
+
+.game-id-input {
+  width: 100%;
+
+  padding: 1rem 1.1rem;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    var(--text-main);
+
+  border:
+    1px solid var(--border-soft);
+
+  border-radius:
+    var(--radius-small);
+
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+
+  &::placeholder {
+    color:
+      var(--text-muted);
+  }
+
+  &:hover {
+    border-color:
+      var(--border-strong);
+  }
+
+  &:focus {
+    outline: none;
+
+    background:
+      var(--bg-surface-hover);
+
+    border-color:
+      var(--accent);
+
+    box-shadow:
+      0 0 0 3px var(--accent-glow);
+  }
+}
+
+.form-error {
+  margin: 0;
+
+  color:
+    var(--danger);
+
+  font-size: 0.9rem;
+}
+
+.button-content {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.75rem;
+}

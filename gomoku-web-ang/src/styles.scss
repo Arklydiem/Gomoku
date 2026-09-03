@@ -244,3 +244,10 @@ textarea,
 [contenteditable='true'] {
   user-select: text;
 }
+
+.dialog-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 0.75rem;
+}

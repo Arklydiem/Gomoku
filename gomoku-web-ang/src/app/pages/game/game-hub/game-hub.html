@@ -1,0 +1,151 @@
+<section class="game-intro">
+
+  <header class="intro-header">
+
+    <span class="eyebrow">
+      GAME CENTER
+    </span>
+
+    <h1>
+      Choose how you<br>
+      want to play.
+    </h1>
+
+    <p>
+      Create a new match, join another player
+      or watch an ongoing game.
+    </p>
+
+  </header>
+
+
+  <div class="mode-cards">
+
+    <button
+      type="button"
+      class="mode-card"
+      (click)="openCreate()">
+
+      <span class="mode-number">
+        01
+      </span>
+
+      <div class="mode-content">
+
+        <h2>
+          Create game
+        </h2>
+
+        <p>
+          Configure a new match
+          and invite another player.
+        </p>
+
+      </div>
+
+      <app-icon
+        class="mode-arrow"
+        name="arrow"
+        [rotation]="180"
+        [size]="22">
+      </app-icon>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="mode-card"
+      (click)="openJoin()">
+
+      <span class="mode-number">
+        02
+      </span>
+
+      <div class="mode-content">
+
+        <h2>
+          Join game
+        </h2>
+
+        <p>
+          Enter an existing match
+          and face another player.
+        </p>
+
+      </div>
+
+      <app-icon
+        class="mode-arrow"
+        name="arrow"
+        [rotation]="180"
+        [size]="22">
+      </app-icon>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="mode-card"
+      (click)="openSpectate()">
+
+      <span class="mode-number">
+        03
+      </span>
+
+      <div class="mode-content">
+
+        <h2>
+          Spectate
+        </h2>
+
+        <p>
+          Watch an ongoing match
+          without taking part.
+        </p>
+
+      </div>
+
+      <app-icon
+        class="mode-arrow"
+        name="arrow"
+        [rotation]="180"
+        [size]="22">
+      </app-icon>
+
+    </button>
+
+  </div>
+
+</section>
+
+
+@if (openedDialog() === 'create') {
+
+  <app-game-create-dialog
+    (closed)="closeDialog()"
+    (gameCreated)="selectPlayerGame($event)">
+  </app-game-create-dialog>
+
+}
+
+
+@if (openedDialog() === 'join') {
+
+  <app-game-join-dialog
+    (closed)="closeDialog()"
+    (gameJoined)="selectPlayerGame($event)">
+  </app-game-join-dialog>
+
+}
+
+
+@if (openedDialog() === 'spectate') {
+
+  <app-game-spectate-dialog
+    (closed)="closeDialog()"
+    (gameLoaded)="selectSpectatorGame($event)">
+  </app-game-spectate-dialog>
+
+}

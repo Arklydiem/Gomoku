@@ -1,0 +1,74 @@
+<app-modal
+  eyebrow="JOIN MATCH"
+  title="Join game"
+  description="Enter the ID of an existing match."
+
+  dialogMinWidth="420px"
+  dialogMaxWidth="540px"
+
+  dialogMinHeight="340px"
+  dialogMaxHeight="520px"
+
+  [closeOnBackdrop]="!loading()"
+  (closed)="close()">
+
+  <div
+    modal-body
+    class="dialog-body">
+
+    <label
+      class="form-label"
+      for="join-game-id">
+      GAME ID
+    </label>
+
+    <input
+      id="join-game-id"
+      class="game-id-input"
+      type="text"
+      autocomplete="off"
+      placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      [value]="gameId()"
+      (input)="updateGameId($event)">
+
+    @if (errorMessage()) {
+      <p class="form-error">
+        {{ errorMessage() }}
+      </p>
+    }
+
+  </div>
+
+  <div modal-footer
+       class="dialog-actions">
+
+    <app-button
+      variant="ghost"
+      [methodToCall]="close">
+      Cancel
+    </app-button>
+
+    <app-button
+      [methodToCall]="joinGame">
+
+      <span class="button-content">
+
+        @if (loading()) {
+          Joining...
+        } @else {
+          Join game
+
+          <app-icon
+            name="arrow"
+            [rotation]="180"
+            [size]="18">
+          </app-icon>
+        }
+
+      </span>
+
+    </app-button>
+
+  </div>
+
+</app-modal>
