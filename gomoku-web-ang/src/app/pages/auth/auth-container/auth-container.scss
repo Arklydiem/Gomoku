@@ -1,47 +1,47 @@
 .auth-page {
-  min-height: calc(100vh - var(--header-height));
+	min-height: calc(100vh - var(--header-height));
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-  padding: 3rem 1.5rem;
+	padding: 3rem 1.5rem;
 }
 
 .auth-card {
-  width: 100%;
-  max-width: 420px;
+	width: 100%;
+	max-width: 420px;
 
-  padding: 2.5rem;
+	padding: 2.5rem;
 
-  background: var(--bg-surface);
+	background: var(--bg-surface);
 
-  backdrop-filter: blur(14px);
+	backdrop-filter: blur(14px);
 
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-large);
+	border: 1px solid var(--border-soft);
+	border-radius: var(--radius-large);
 
-  box-shadow: var(--shadow-large);
+	box-shadow: var(--shadow-large);
 }
 
 .auth-header {
-  margin-bottom: 2rem;
+	margin-bottom: 2rem;
 
-  text-align: center;
+	text-align: center;
 
-  h2 {
-    margin: 0;
+	h2 {
+		margin: 0;
 
-    color: var(--text-main);
+		color: var(--text-main);
 
-    font-size: 2rem;
-  }
+		font-size: 2rem;
+	}
 
-  p {
-    margin: 0.6rem 0 0;
+	p {
+		margin: 0.6rem 0 0;
 
-    color: var(--text-muted);
+		color: var(--text-muted);
 
-    line-height: 1.5;
-  }
+		line-height: 1.5;
+	}
 }

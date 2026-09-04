@@ -1,142 +1,86 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
+import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 
 import {Icon} from '../icon/icon';
 
 @Component({
-  selector: 'app-modal',
-  imports: [
-    Icon,
-  ],
-  templateUrl: './modal.html',
-  styleUrl: './modal.scss',
+	selector: 'app-modal',
+	imports: [Icon],
+	templateUrl: './modal.html',
+	styleUrl: './modal.scss',
 })
 export class Modal implements OnInit, AfterViewInit, OnDestroy {
+	@Input()
+	eyebrow: string = '';
 
-  @Input()
-  eyebrow: string = '';
+	@Input()
+	title: string = '';
 
-  @Input()
-  title: string = '';
+	@Input()
+	description: string = '';
 
-  @Input()
-  description: string = '';
+	@Input()
+	closeOnBackdrop: boolean = true;
 
-  @Input()
-  closeOnBackdrop: boolean = true;
+	@Input()
+	dialogMinWidth: string = '0';
 
+	@Input()
+	dialogMaxWidth: string = '560px';
 
-  /*
-   * Dialog dimensions
-   */
+	@Input()
+	dialogMinHeight: string = '0';
 
-  @Input()
-  dialogMinWidth: string = '0';
+	@Input()
+	dialogMaxHeight: string = 'calc(100vh - 3rem)';
 
-  @Input()
-  dialogMaxWidth: string = '560px';
+	@Input()
+	scrollable: boolean = false;
 
-  @Input()
-  dialogMinHeight: string = '0';
+	@Output()
+	closed = new EventEmitter<void>();
 
-  @Input()
-  dialogMaxHeight: string = 'calc(100vh - 3rem)';
+	@ViewChild('modalDialog')
+	private modalDialog?: ElementRef<HTMLElement>;
 
+	private previousBodyOverflow: string = '';
+	private previousActiveElement: HTMLElement | null = null;
 
-  /*
-   * Disabled by default because dropdowns/selectors
-   * must be able to overflow outside the dialog.
-   */
-  @Input()
-  scrollable: boolean = false;
+	constructor(@Inject(DOCUMENT) private readonly document: Document) {}
 
+	ngOnInit(): void {
+		this.previousBodyOverflow = this.document.body.style.overflow;
+		this.previousActiveElement = this.document.activeElement as HTMLElement | null;
+		this.document.body.style.overflow = 'hidden';
+	}
 
-  @Output()
-  closed =
-    new EventEmitter<void>();
+	ngAfterViewInit(): void {
+		this.modalDialog?.nativeElement.focus();
+	}
 
+	ngOnDestroy(): void {
+		this.document.body.style.overflow = this.previousBodyOverflow;
+		this.previousActiveElement?.focus();
+	}
 
-  @ViewChild('modalDialog')
-  private modalDialog?: ElementRef<HTMLElement>;
+	@HostListener('document:keydown.escape')
+	closeOnEscape(): void {
+		this.close();
+	}
 
+	onBackdropMouseDown(event: MouseEvent): void {
+		if (!this.closeOnBackdrop) {
+			return;
+		}
 
-  private previousBodyOverflow: string = '';
+		if (event.target !== event.currentTarget) {
+			return;
+		}
 
-  private previousActiveElement:
-    HTMLElement | null = null;
+		this.close();
+	}
 
-
-  constructor(
-    @Inject(DOCUMENT)
-    private readonly document: Document,
-  ) {}
-
-
-  ngOnInit(): void {
-
-    this.previousBodyOverflow =
-      this.document.body.style.overflow;
-
-    this.previousActiveElement =
-      this.document.activeElement as HTMLElement | null;
-
-    this.document.body.style.overflow =
-      'hidden';
-  }
-
-
-  ngAfterViewInit(): void {
-    this.modalDialog?.nativeElement.focus();
-  }
-
-
-  ngOnDestroy(): void {
-
-    this.document.body.style.overflow =
-      this.previousBodyOverflow;
-
-    this.previousActiveElement?.focus();
-  }
-
-
-  @HostListener('document:keydown.escape')
-  closeOnEscape(): void {
-    this.close();
-  }
-
-
-  onBackdropMouseDown(
-    event: MouseEvent,
-  ): void {
-
-    if (!this.closeOnBackdrop) {
-      return;
-    }
-
-    if (
-      event.target !==
-      event.currentTarget
-    ) {
-      return;
-    }
-
-    this.close();
-  }
-
-
-  close(): void {
-    this.closed.emit();
-  }
+	close(): void {
+		this.closed.emit();
+	}
 }

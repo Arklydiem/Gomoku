@@ -1,17 +1,15 @@
 <section class="auth-page">
-  <div class="auth-card">
+	<div class="auth-card">
+		<header class="auth-header">
+			<h2>{{ title }}</h2>
 
-    <header class="auth-header">
-      <h2>{{ title }}</h2>
+			@if (subtitle) {
+				<p>{{ subtitle }}</p>
+			}
+		</header>
 
-      @if (subtitle) {
-        <p>{{ subtitle }}</p>
-      }
-    </header>
-
-    <div class="auth-content">
-      <ng-content></ng-content>
-    </div>
-
-  </div>
+		<div class="auth-content">
+			<ng-content></ng-content>
+		</div>
+	</div>
 </section>

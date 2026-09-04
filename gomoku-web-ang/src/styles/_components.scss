@@ -1,10 +1,10 @@
 .panel {
-  background: var(--bg-surface);
+	background: var(--bg-surface);
 
-  backdrop-filter: blur(14px);
+	backdrop-filter: blur(14px);
 
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius);
+	border: 1px solid var(--border-soft);
+	border-radius: var(--radius);
 
-  box-shadow: var(--shadow-soft);
+	box-shadow: var(--shadow-soft);
 }

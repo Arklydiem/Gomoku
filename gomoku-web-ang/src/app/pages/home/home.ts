@@ -1,34 +1,31 @@
 import {Component, inject} from '@angular/core';
 import {Router} from '@angular/router';
-
-import {Button} from '../../components/button/button';
 import {Icon} from '../../components/icon/icon';
 import {AuthService} from '../../core/services/auth.service';
 
 @Component({
-  selector: 'app-home',
-  imports: [
-    Button,
-    Icon,
-  ],
-  templateUrl: './home.html',
-  styleUrl: './home.scss',
+	selector: 'app-home',
+	imports: [Icon],
+	templateUrl: './home.html',
+	styleUrl: './home.scss',
 })
 export class Home {
+	readonly authService = inject(AuthService);
+	private readonly router = inject(Router);
 
-  private readonly router = inject(Router);
+	play = (): void => {
+		void this.router.navigate(['/game/create']);
+	};
 
-  readonly authService = inject(AuthService);
+	openCreate(): void {
+		void this.router.navigate(['/game/create']);
+	}
 
-  play(): void {
-    this.router.navigate(['/game']);
-  }
+	openJoin(): void {
+		void this.router.navigate(['/game/join']);
+	}
 
-  playAgainstAi(): void {
-    this.router.navigate(['/game']);
-  }
-
-  playMultiplayer(): void {
-    this.router.navigate(['/game']);
-  }
+	openSpectate(): void {
+		void this.router.navigate(['/game/spectate']);
+	}
 }

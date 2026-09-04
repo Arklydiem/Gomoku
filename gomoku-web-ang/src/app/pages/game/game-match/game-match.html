@@ -1,113 +1,66 @@
 <section class="game-match">
+	@if (loading()) {
+		<div class="match-state">
+			Loading game...
+		</div>
+	} @else if (errorMessage()) {
+		<div class="match-state match-state-error">
+			{{ errorMessage() }}
+		</div>
+	} @else if (game(); as currentGame) {
+		<header class="game-header">
+			<div class="game-title">
+				<span class="eyebrow">MATCH</span>
+				<h1>Gomoku</h1>
+			</div>
 
-  <header class="game-header">
+			<div class="game-meta">
+				<span class="game-status">{{ currentGame.status }}</span>
 
-    <div class="game-title">
+				@if (isSpectator()) {
+					<span class="spectator-badge">Spectator</span>
+				}
+			</div>
+		</header>
 
-      <span class="eyebrow">
-        MATCH
-      </span>
+		<div class="game-layout">
+			<aside class="player-panel">
+				<div class="player-card">
+					<span class="stone black"></span>
 
-      <h1>
-        Gomoku
-      </h1>
+					<div class="player-content">
+						<span class="player-label">BLACK</span>
+						<strong>Player 1</strong>
+					</div>
+				</div>
 
-    </div>
+				<div class="game-stat">
+					<span>Captures</span>
+					<strong>{{ currentGame.blackCaptures }}</strong>
+				</div>
+			</aside>
 
-    <div class="game-meta">
+			<main class="board-container">
+				<div class="board-placeholder">
+					GAME BOARD
+				</div>
+			</main>
 
-      <span class="game-status">
-        {{ game().status }}
-      </span>
+			<aside class="player-panel">
+				<div class="player-card">
+					<span class="stone white"></span>
 
-      @if (isSpectator()) {
-        <span class="spectator-badge">
-          Spectator
-        </span>
-      }
+					<div class="player-content">
+						<span class="player-label">WHITE</span>
+						<strong>Player 2</strong>
+					</div>
+				</div>
 
-    </div>
-
-  </header>
-
-  <div class="game-layout">
-
-    <aside class="player-panel">
-
-      <div class="player-card">
-
-        <span class="stone black"></span>
-
-        <div class="player-content">
-
-          <span class="player-label">
-            BLACK
-          </span>
-
-          <strong>
-            Player 1
-          </strong>
-
-        </div>
-
-      </div>
-
-      <div class="game-stat">
-
-        <span>
-          Captures
-        </span>
-
-        <strong>
-          0
-        </strong>
-
-      </div>
-
-    </aside>
-
-    <main class="board-container">
-
-      <div class="board-placeholder">
-        GAME BOARD
-      </div>
-
-    </main>
-
-    <aside class="player-panel">
-
-      <div class="player-card">
-
-        <span class="stone white"></span>
-
-        <div class="player-content">
-
-          <span class="player-label">
-            WHITE
-          </span>
-
-          <strong>
-            Player 2
-          </strong>
-
-        </div>
-
-      </div>
-
-      <div class="game-stat">
-
-        <span>
-          Captures
-        </span>
-
-        <strong>
-          0
-        </strong>
-
-      </div>
-
-    </aside>
-
-  </div>
-
+				<div class="game-stat">
+					<span>Captures</span>
+					<strong>{{ currentGame.whiteCaptures }}</strong>
+				</div>
+			</aside>
+		</div>
+	}
 </section>

@@ -1,4 +1,4 @@
 export enum StoneColorEnum {
-  BLACK,
-  WHITE
+	BLACK,
+	WHITE,
 }

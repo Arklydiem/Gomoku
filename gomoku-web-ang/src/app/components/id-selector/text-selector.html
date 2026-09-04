@@ -1,32 +1,23 @@
 <div class="text-selector-container">
+	@if (label) {
+		<label>
+			{{ label }}
+		</label>
+	}
 
-  @if (label) {
-    <label>
-      {{ label }}
-    </label>
-  }
+	<div class="input-wrapper">
+		<input (click)="saveTextInClipboard($event)"
+			[style.width.px]="width"
+			type="text"
+			[value]="value"
+			readonly>
 
-  <div class="input-wrapper">
-
-    <input
-      (click)="saveTextInClipboard($event)"
-      [style.width.px]="width"
-      type="text"
-      [value]="value"
-      readonly>
-
-    @if (copied()) {
-      <span
-        class="copied-label"
-
-        [style.left.px]="copiedPositionX()"
-        [style.top.px]="copiedPositionY()">
-
-        Copied!
-
-      </span>
-    }
-
-  </div>
-
+		@if (copied()) {
+			<span class="copied-label"
+				[style.left.px]="copiedPositionX()"
+				[style.top.px]="copiedPositionY()">
+				Copied!
+			</span>
+		}
+	</div>
 </div>

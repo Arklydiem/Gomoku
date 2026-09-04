@@ -1,50 +1,43 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {NavButton} from '../nav-button/nav-button';
+
 import {AuthService} from '../../core/services/auth.service';
 import {BurgerMenu} from './burger-menu/burger-menu';
 import {Icon} from '../icon/icon';
+import {NavButton} from '../nav-button/nav-button';
 
 @Component({
-  selector: 'app-header',
-  imports: [NavButton, BurgerMenu, Icon],
-  templateUrl: './header.html',
-  styleUrl: './header.scss',
-  standalone: true
+	selector: 'app-header',
+	imports: [NavButton, BurgerMenu, Icon],
+	templateUrl: './header.html',
+	styleUrl: './header.scss',
+	standalone: true,
 })
-export class Header implements OnInit{
+export class Header implements OnInit {
+	private readonly router = inject(Router);
 
-  private readonly router = inject(Router);
-  currentPage: string = '/home';
+	currentPage: string = '/home';
+	isBurgerMenuOpen: boolean = false;
 
-  isBurgerMenuOpen: boolean = false;
+	constructor(public readonly authService: AuthService) {}
 
-  constructor(
-    public readonly authService: AuthService
-  ) {}
+	ngOnInit(): void {
+		this.router.events.subscribe(() => this.updateActivePage());
+	}
 
-  ngOnInit() {
-    this.router.events.subscribe(() => {
-      this.updateActivePage();
-    });
-  }
+	private updateActivePage(): void {
+		this.currentPage = this.router.url;
+	}
 
-  private updateActivePage(): void {
-    this.currentPage = this.router.url;
-  }
+	changePage(page: string): void {
+		this.router.navigate([page]).then(() => console.debug('Route to:', page));
+	}
 
-  changePage(page: string): void {
-    this.router.navigate([page]).then(() => {
-      console.debug('Route to:', page);
-    });
-  }
+	toggleBurgerMenu(): void {
+		this.isBurgerMenuOpen = !this.isBurgerMenuOpen;
+	}
 
-  toggleBurgerMenu(): void {
-    this.isBurgerMenuOpen = !this.isBurgerMenuOpen;
-  }
-
-  closeBurgerMenu(): void {
-    this.isBurgerMenuOpen = false;
-  }
-
+	closeBurgerMenu(): void {
+		this.isBurgerMenuOpen = false;
+	}
 }

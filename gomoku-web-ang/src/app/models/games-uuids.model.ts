@@ -1,3 +1,3 @@
 export interface GamesUuidsModel {
-  uuids: string[];
+	uuids: string[];
 }

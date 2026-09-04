@@ -1,16 +1,12 @@
-<div
-  class="backdrop"
-  [class.open]="open"
-  (click)="close()">
+<div class="backdrop"
+	[class.open]="open"
+	(click)="close()">
 
-  <div
-    class="burger-menu"
-    (click)="$event.stopPropagation()">
+	<div class="burger-menu"
+		(click)="$event.stopPropagation()">
 
-    <app-nav-button
-      [methodToCall]="() => logoutAndClose()">
-      Logout
-    </app-nav-button>
-
-  </div>
+		<app-nav-button [methodToCall]="() => logoutAndClose()">
+			Logout
+		</app-nav-button>
+	</div>
 </div>

@@ -1,4 +1,4 @@
 export enum PlayerTypeEnum {
-  REAL,
-  AI
+	REAL,
+	AI,
 }

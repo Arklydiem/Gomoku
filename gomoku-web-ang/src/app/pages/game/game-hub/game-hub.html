@@ -1,151 +1,346 @@
-<section class="game-intro">
+<section class="game-hub">
+	<header class="hub-header">
+		<span class="eyebrow">
+			GAME CENTER
+		</span>
 
-  <header class="intro-header">
+		<nav class="hub-tabs"
+			[attr.data-mode]="mode()"
+			aria-label="Game center">
 
-    <span class="eyebrow">
-      GAME CENTER
-    </span>
+			<a routerLink="/game/create" [class.active]="mode() === 'create'">Create</a>
 
-    <h1>
-      Choose how you<br>
-      want to play.
-    </h1>
+			<a routerLink="/game/join" [class.active]="mode() === 'join'">Join</a>
 
-    <p>
-      Create a new match, join another player
-      or watch an ongoing game.
-    </p>
+			<a routerLink="/game/spectate" [class.active]="mode() === 'spectate'">Spectate</a>
+		</nav>
+	</header>
 
-  </header>
+	@if (errorMessage()) {
+		<div class="feedback error-feedback">
+			{{ errorMessage() }}
+		</div>
+	}
 
+	<div class="hub-viewport">
+		<div class="hub-track" [attr.data-mode]="mode()">
 
-  <div class="mode-cards">
+			<section class="hub-panel">
+				<header class="panel-intro">
+					<h1>Create a game.</h1>
+					<p>Choose the kind of match you want to start.</p>
+				</header>
 
-    <button
-      type="button"
-      class="mode-card"
-      (click)="openCreate()">
+				<section class="create-grid">
+					<button type="button"
+						class="create-card"
+						[class.disabled]="isCreateCardDisabled(GameTypeEnum.SOLO)"
+						[disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.SOLO)"
+						(click)="createGame(GameTypeEnum.SOLO)">
 
-      <span class="mode-number">
-        01
-      </span>
+						<div class="card-content">
+							<span class="card-tag">LOCAL</span>
+							<h2>Solo</h2>
+							<p>Start a solo game and control each stone color.</p>
+						</div>
 
-      <div class="mode-content">
+						<app-icon class="card-arrow"
+							name="arrow"
+							[rotation]="180"
+							[size]="22">
+						</app-icon>
+					</button>
 
-        <h2>
-          Create game
-        </h2>
+					<button type="button"
+						class="create-card"
+						[class.disabled]="isCreateCardDisabled(GameTypeEnum.PLAYER_VS_PLAYER)"
+						[disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.PLAYER_VS_PLAYER)"
+						(click)="createGame(GameTypeEnum.PLAYER_VS_PLAYER)">
 
-        <p>
-          Configure a new match
-          and invite another player.
-        </p>
+						<div class="card-content">
+							<span class="card-tag">MULTIPLAYER</span>
+							<h2>Player vs Player</h2>
+							<p>Create a match and challenge an opponent.</p>
+						</div>
 
-      </div>
+						<app-icon class="card-arrow"
+							name="arrow"
+							[rotation]="180"
+							[size]="22">
+						</app-icon>
+					</button>
 
-      <app-icon
-        class="mode-arrow"
-        name="arrow"
-        [rotation]="180"
-        [size]="22">
-      </app-icon>
+					<button type="button"
+						class="create-card"
+						[class.disabled]="isCreateCardDisabled(GameTypeEnum.PLAYER_VS_AI)"
+						[disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.PLAYER_VS_AI)"
+						(click)="createGame(GameTypeEnum.PLAYER_VS_AI)">
 
-    </button>
+						<div class="card-content">
+							<span class="card-tag">AI</span>
+							<h2>Player vs AI</h2>
+							<p>Challenge an AI in a standard match.</p>
+						</div>
 
+						<app-icon class="card-arrow"
+							name="arrow"
+							[rotation]="180"
+							[size]="22">
+						</app-icon>
+					</button>
 
-    <button
-      type="button"
-      class="mode-card"
-      (click)="openJoin()">
+					<button type="button"
+						class="create-card"
+						[class.disabled]="isCreateCardDisabled(GameTypeEnum.AI_VS_AI)"
+						[disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.AI_VS_AI)"
+						(click)="createGame(GameTypeEnum.AI_VS_AI)">
 
-      <span class="mode-number">
-        02
-      </span>
+						<div class="card-content">
+							<span class="card-tag">AI</span>
+							<h2>AI vs AI</h2>
+							<p>Amusing to see the same AI playing against itself.</p>
+						</div>
 
-      <div class="mode-content">
+						<app-icon class="card-arrow"
+							name="arrow"
+							[rotation]="180"
+							[size]="22">
+						</app-icon>
+					</button>
+				</section>
+			</section>
 
-        <h2>
-          Join game
-        </h2>
+			<section class="hub-panel">
+				<header class="panel-intro">
+					<h1>Join a game.</h1>
+					<p>
+						Join directly with a UUID, resume one of your games
+						or choose an available public match.
+					</p>
+				</header>
 
-        <p>
-          Enter an existing match
-          and face another player.
-        </p>
+				<section class="join-by-id panel-section">
+					<div class="section-heading">
+						<div>
+							<span class="section-kicker">DIRECT ACCESS</span>
+							<h2>Join by UUID</h2>
+						</div>
+					</div>
 
-      </div>
+					<div class="uuid-form">
+						<input type="text"
+							autocomplete="off"
+							class="uuid-input"
+							placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+							[value]="gameId()"
+							(input)="updateGameId($event)"
+							(keydown.enter)="joinGameById()">
 
-      <app-icon
-        class="mode-arrow"
-        name="arrow"
-        [rotation]="180"
-        [size]="22">
-      </app-icon>
+						<button type="button"
+							class="primary-action"
+							[disabled]="actionLoading()"
+							(click)="joinGameById()">
 
-    </button>
+							@if (actionLoading()) {
+								Joining...
+							} @else {
+								Join game
 
+								<app-icon name="arrow"
+									[rotation]="180"
+									[size]="18">
+								</app-icon>
+							}
+						</button>
+					</div>
+				</section>
 
-    <button
-      type="button"
-      class="mode-card"
-      (click)="openSpectate()">
+				<section class="games-section">
+					<div class="section-heading">
+						<div>
+							<span class="section-kicker">YOUR MATCHES</span>
+							<h2>Your games</h2>
+						</div>
 
-      <span class="mode-number">
-        03
-      </span>
+						<button type="button"
+							class="refresh-button"
+							[disabled]="loading()"
+							(click)="refreshGames()">
+							Refresh
+						</button>
+					</div>
 
-      <div class="mode-content">
+					@if (!authService.isLoggedIn()) {
+						<div class="empty-state">
+							Log in to see the games linked to your account.
+						</div>
+					} @else if (loading()) {
+						<div class="empty-state">
+							Loading your games...
+						</div>
+					} @else if (myGames().length === 0) {
+						<div class="empty-state">
+							You do not have any game yet.
+						</div>
+					} @else {
+						<div class="games-list">
+							@for (game of myGames(); track game.uuid) {
+								<button type="button"
+									class="game-row"
+									(click)="openPlayerGame(game)">
 
-        <h2>
-          Spectate
-        </h2>
+									<div class="game-main">
+										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
+										<span class="game-uuid selectable">{{ game.uuid }}</span>
+									</div>
 
-        <p>
-          Watch an ongoing match
-          without taking part.
-        </p>
+									<div class="game-meta">
+										<span>
+											{{ game.players.length }}
+											player{{ game.players.length === 1 ? '' : 's' }}
+										</span>
 
-      </div>
+										<span class="status-badge">
+											{{ game.status | enumFormat:'title' }}
+										</span>
+									</div>
 
-      <app-icon
-        class="mode-arrow"
-        name="arrow"
-        [rotation]="180"
-        [size]="22">
-      </app-icon>
+									<span class="row-action">
+										Open
 
-    </button>
+										<app-icon name="arrow"
+											[rotation]="180"
+											[size]="16">
+										</app-icon>
+									</span>
+								</button>
+							}
+						</div>
+					}
+				</section>
 
-  </div>
+				<section class="games-section">
+					<div class="section-heading">
+						<div>
+							<span class="section-kicker">AVAILABLE</span>
+							<h2>Public games</h2>
+						</div>
+					</div>
 
+					@if (loading()) {
+						<div class="empty-state">
+							Loading public games...
+						</div>
+					} @else if (publicGames().length === 0) {
+						<div class="empty-state">
+							No public game is currently available.
+						</div>
+					} @else {
+						<div class="games-list">
+							@for (game of publicGames(); track game.uuid) {
+								<button type="button"
+									class="game-row"
+									[disabled]="actionLoading()"
+									(click)="joinGame(game.uuid)">
+
+									<div class="game-main">
+										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
+										<span class="game-uuid selectable">{{ game.uuid }}</span>
+									</div>
+
+									<div class="game-meta">
+										<span>
+											{{ game.players.length }}
+											player{{ game.players.length === 1 ? '' : 's' }}
+										</span>
+
+										<span class="status-badge">
+											{{ game.status | enumFormat:'title' }}
+										</span>
+									</div>
+
+									<span class="row-action">
+										Join
+
+										<app-icon name="arrow"
+											[rotation]="180"
+											[size]="16">
+										</app-icon>
+									</span>
+								</button>
+							}
+						</div>
+					}
+				</section>
+			</section>
+
+			<section class="hub-panel">
+				<header class="panel-intro">
+					<h1>Spectate games.</h1>
+					<p>Browse the available matches and open one in spectator mode.</p>
+				</header>
+
+				<section class="games-section spectate-section">
+					<div class="section-heading">
+						<div>
+							<span class="section-kicker">ALL MATCHES</span>
+							<h2>Games</h2>
+						</div>
+
+						<button type="button"
+							class="refresh-button"
+							[disabled]="loading()"
+							(click)="refreshGames()">
+							Refresh
+						</button>
+					</div>
+
+					@if (loading()) {
+						<div class="empty-state">
+							Loading games...
+						</div>
+					} @else if (games().length === 0) {
+						<div class="empty-state">
+							No game is available to spectate.
+						</div>
+					} @else {
+						<div class="games-list">
+							@for (game of games(); track game.uuid) {
+								<button type="button"
+									class="game-row"
+									(click)="spectateGame(game)">
+
+									<div class="game-main">
+										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
+										<span class="game-uuid selectable">{{ game.uuid }}</span>
+									</div>
+
+									<div class="game-meta">
+										<span>
+											{{ game.players.length }}
+											player{{ game.players.length === 1 ? '' : 's' }}
+										</span>
+
+										<span class="status-badge">
+											{{ game.status | enumFormat:'title' }}
+										</span>
+									</div>
+
+									<span class="row-action">
+										Spectate
+
+										<app-icon name="arrow"
+											[rotation]="180"
+											[size]="16">
+										</app-icon>
+									</span>
+								</button>
+							}
+						</div>
+					}
+				</section>
+			</section>
+
+		</div>
+	</div>
 </section>
-
-
-@if (openedDialog() === 'create') {
-
-  <app-game-create-dialog
-    (closed)="closeDialog()"
-    (gameCreated)="selectPlayerGame($event)">
-  </app-game-create-dialog>
-
-}
-
-
-@if (openedDialog() === 'join') {
-
-  <app-game-join-dialog
-    (closed)="closeDialog()"
-    (gameJoined)="selectPlayerGame($event)">
-  </app-game-join-dialog>
-
-}
-
-
-@if (openedDialog() === 'spectate') {
-
-  <app-game-spectate-dialog
-    (closed)="closeDialog()"
-    (gameLoaded)="selectSpectatorGame($event)">
-  </app-game-spectate-dialog>
-
-}

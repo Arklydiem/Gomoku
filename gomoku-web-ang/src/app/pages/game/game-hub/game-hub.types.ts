@@ -1,16 +1,3 @@
-import {GameModel} from '../../../models/game.model';
-
-export type GameHubDialog =
-  | 'create'
-  | 'join'
-  | 'spectate'
-  | null;
-
-export type GameAccessMode =
-  | 'player'
-  | 'spectator';
-
-export interface GameHubSelection {
-  game: GameModel;
-  accessMode: GameAccessMode;
-}
+export type GameHubMode = 'create' | 'join' | 'spectate';
+export type GameAccessMode = 'player' | 'spectator';
+export type CreateCardState = 'active' | 'disabled';

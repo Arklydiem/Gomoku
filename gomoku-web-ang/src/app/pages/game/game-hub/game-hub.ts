@@ -1,80 +1,191 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  signal,
-} from '@angular/core';
+import {Component, computed, effect, inject, input, signal} from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
+import {catchError, finalize, forkJoin, map, of, switchMap} from 'rxjs';
 
 import {Icon} from '../../../components/icon/icon';
-
+import {AuthService} from '../../../core/services/auth.service';
+import {GameService} from '../../../core/services/game.service';
 import {GameModel} from '../../../models/game.model';
-
-import {GameCreateDialog} from './game-create-dialog/game-create-dialog';
-import {GameJoinDialog} from './game-join-dialog/game-join-dialog';
-import {GameSpectateDialog} from './game-spectate-dialog/game-spectate-dialog';
-
-import {
-  GameAccessMode,
-  GameHubDialog,
-  GameHubSelection,
-} from './game-hub.types';
+import {GameStatusEnum} from '../../../shared/enums/game-status.enum';
+import {GameTypeEnum} from '../../../shared/enums/game-type.enum';
+import {EnumFormatPipe} from '../../../shared/pipes/eum-format.pipe';
+import {CreateCardState, GameHubMode} from './game-hub.types';
 
 @Component({
-  selector: 'app-game-hub',
-  imports: [
-    Icon,
-    GameCreateDialog,
-    GameJoinDialog,
-    GameSpectateDialog,
-  ],
-  templateUrl: './game-hub.html',
-  styleUrl: './game-hub.scss',
+	selector: 'app-game-hub',
+	imports: [Icon, RouterLink, EnumFormatPipe],
+	templateUrl: './game-hub.html',
+	styleUrl: './game-hub.scss',
 })
 export class GameHub {
+	private readonly router = inject(Router);
+	private readonly gameService = inject(GameService);
+	private readonly gamesLoaded = signal<boolean>(false);
 
-  @Output()
-  gameSelected =
-    new EventEmitter<GameHubSelection>();
+	readonly authService = inject(AuthService);
 
-  readonly openedDialog =
-    signal<GameHubDialog>(null);
+	readonly mode = input.required<GameHubMode>();
+	readonly gameId = signal<string>('');
+	readonly games = signal<GameModel[]>([]);
+	readonly loading = signal<boolean>(false);
+	readonly actionLoading = signal<boolean>(false);
+	readonly errorMessage = signal<string | null>(null);
 
-  openCreate(): void {
-    this.openedDialog.set('create');
-  }
+	readonly createCardStates: Record<GameTypeEnum,CreateCardState> = {
+		[GameTypeEnum.SOLO]: 'active',
+		[GameTypeEnum.PLAYER_VS_PLAYER]: 'disabled',
+		[GameTypeEnum.PLAYER_VS_AI]: 'disabled',
+		[GameTypeEnum.AI_VS_AI]: 'disabled',
+	};
 
-  openJoin(): void {
-    this.openedDialog.set('join');
-  }
+	readonly myGames = computed(() => {
+		const userUuid = this.authService.user()?.uuid;
 
-  openSpectate(): void {
-    this.openedDialog.set('spectate');
-  }
+		if (!userUuid) {
+			return [];
+		}
 
-  closeDialog(): void {
-    this.openedDialog.set(null);
-  }
+		return this.games().filter(game => game.players.some(player => player.uuid === userUuid));
+	});
 
-  selectSpectatorGame(game: GameModel): void {
-    this.selectGame(game, 'spectator');
-  }
+	readonly publicGames = computed(() => {
+		const myGameUuids = new Set(this.myGames().map(game => game.uuid));
 
-  selectPlayerGame(game: GameModel): void {
-    this.selectGame(
-      game,
-      'player',
-    );
-  }
+		return this.games().filter(game => this.isJoinable(game) && !myGameUuids.has(game.uuid));
+	});
 
-  private selectGame(
-    game: GameModel,
-    accessMode: GameAccessMode,
-  ): void {
-    this.closeDialog();
+	constructor() {
+		effect(() => {
+			const mode = this.mode();
 
-    this.gameSelected.emit({
-      game,
-      accessMode,
-    });
-  }
+			this.errorMessage.set(null);
+
+			if (mode !== 'create' && !this.gamesLoaded()) {
+				this.loadGames();
+			}
+		});
+	}
+
+	isCreateCardDisabled(gameType: GameTypeEnum): boolean {
+		return this.createCardStates[gameType] === 'disabled';
+	}
+
+	updateGameId(event: Event): void {
+		const input = event.target as HTMLInputElement;
+
+		this.gameId.set(input.value);
+		this.errorMessage.set(null);
+	}
+
+	createGame(gameType: GameTypeEnum): void {
+		if (this.actionLoading() || this.isCreateCardDisabled(gameType)) {
+			return;
+		}
+
+		this.actionLoading.set(true);
+		this.errorMessage.set(null);
+
+		this.gameService
+			.createGame(gameType)
+			.pipe(finalize(() => this.actionLoading.set(false)))
+			.subscribe({
+				next: game => this.openPlayerGame(game),
+				error: error => {
+					console.error('Failed to create game:', error);
+					this.errorMessage.set('Unable to create the game.');
+				},
+			});
+	}
+
+	joinGameById(): void {
+		const gameUuid = this.gameId().trim();
+
+		if (!gameUuid) {
+			this.errorMessage.set('Please enter a game UUID.');
+			return;
+		}
+
+		this.joinGame(gameUuid);
+	}
+
+	joinGame(gameUuid: string): void {
+		if (this.actionLoading()) {
+			return;
+		}
+
+		this.actionLoading.set(true);
+		this.errorMessage.set(null);
+
+		this.gameService
+			.joinGame(gameUuid)
+			.pipe(finalize(() => this.actionLoading.set(false)))
+			.subscribe({
+				next: game => this.openPlayerGame(game),
+				error: error => {
+					console.error('Failed to join game:', error);
+					this.errorMessage.set('Unable to join this game.');
+				},
+			});
+	}
+
+	openPlayerGame(game: GameModel): void {
+		void this.router.navigate(['/game', game.uuid]);
+	}
+
+	spectateGame(game: GameModel): void {
+		void this.router.navigate(['/game', game.uuid, 'spectate']);
+	}
+
+	refreshGames(): void {
+		this.gamesLoaded.set(false);
+		this.loadGames();
+	}
+
+	private loadGames(): void {
+		if (this.loading()) {
+			return;
+		}
+
+		this.loading.set(true);
+		this.errorMessage.set(null);
+
+		this.gameService
+			.getGames()
+			.pipe(
+				switchMap(({uuids}) => {
+					if (uuids.length === 0) {
+						return of([] as GameModel[]);
+					}
+
+					return forkJoin(
+						uuids.map(uuid =>
+							this.gameService.getGame(uuid).pipe(
+								catchError(error => {
+									console.warn(`Unable to load game ${uuid}:`, error);
+									return of(null);
+								}),
+							),
+						),
+					).pipe(map(games => games.filter((game): game is GameModel => game !== null)));
+				}),
+				finalize(() => {
+					this.loading.set(false);
+					this.gamesLoaded.set(true);
+				}),
+			)
+			.subscribe({
+				next: games => this.games.set(games),
+				error: error => {
+					console.error('Failed to load games:', error);
+					this.games.set([]);
+					this.errorMessage.set('Unable to load the games.');
+				},
+			});
+	}
+
+	private isJoinable(game: GameModel): boolean {
+		return game.status === GameStatusEnum.CREATED || game.status === GameStatusEnum.WAITING;
+	}
+
+	protected readonly GameTypeEnum = GameTypeEnum;
 }

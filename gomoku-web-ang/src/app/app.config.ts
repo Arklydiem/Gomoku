@@ -1,72 +1,51 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners
-} from '@angular/core';
+import {ApplicationConfig, provideBrowserGlobalErrorListeners} from '@angular/core';
 
-import {
-  ActivatedRouteSnapshot,
-  provideRouter,
-  withViewTransitions
-} from '@angular/router';
+import {ActivatedRouteSnapshot, provideRouter, withComponentInputBinding, withViewTransitions} from '@angular/router';
 
 import {routes} from './app.routes';
 
+function getPageOrder(snapshot: ActivatedRouteSnapshot): number | null {
+	let route: ActivatedRouteSnapshot | null = snapshot;
 
-function getPageOrder(
-  snapshot: ActivatedRouteSnapshot
-): number | null {
+	while (route) {
+		const pageOrder = route.data['pageOrder'];
 
-  let route: ActivatedRouteSnapshot | null = snapshot;
+		if (typeof pageOrder === 'number') {
+			return pageOrder;
+		}
 
-  while (route) {
-    const pageOrder = route.data['pageOrder'];
+		route = route.firstChild;
+	}
 
-    if (typeof pageOrder === 'number') {
-      return pageOrder;
-    }
-
-    route = route.firstChild;
-  }
-
-  return null;
+	return null;
 }
 
-
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
+	providers: [
+		provideBrowserGlobalErrorListeners(),
 
-    provideRouter(
-      routes,
+		provideRouter(
+			routes,
 
-      withViewTransitions({
-        skipInitialTransition: true,
+			withComponentInputBinding(),
 
-        onViewTransitionCreated: ({
-                                    transition,
-                                    from,
-                                    to
-                                  }) => {
+			withViewTransitions({
+				skipInitialTransition: true,
 
-          const fromOrder = getPageOrder(from);
-          const toOrder = getPageOrder(to);
+				onViewTransitionCreated: ({transition, from, to}) => {
+					const fromOrder = getPageOrder(from);
 
-          if (
-            fromOrder === null ||
-            toOrder === null ||
-            fromOrder === toOrder
-          ) {
-            transition.skipTransition();
-            return;
-          }
+					const toOrder = getPageOrder(to);
 
-          transition.types.add(
-            toOrder > fromOrder
-              ? 'forward'
-              : 'backward'
-          );
-        },
-      })
-    ),
-  ],
+					if (fromOrder === null || toOrder === null || fromOrder === toOrder) {
+						transition.skipTransition();
+
+						return;
+					}
+
+					transition.types.add(toOrder > fromOrder ? 'forward' : 'backward');
+				},
+			}),
+		),
+	],
 };

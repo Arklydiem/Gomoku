@@ -1,4 +1,1 @@
-export type IconType = 'arrow'
-  | 'burger-menu'
-  | 'close'
-  ;
+export type IconType = 'arrow' | 'burger-menu' | 'close';

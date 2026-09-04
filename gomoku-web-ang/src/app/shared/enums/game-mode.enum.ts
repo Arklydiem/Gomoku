@@ -1,4 +1,4 @@
 export enum GameModeEnum {
-  PLAY,
-  SPECTATE
+	PLAY,
+	SPECTATE,
 }

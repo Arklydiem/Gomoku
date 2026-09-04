@@ -1,35 +1,33 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NavButton} from '../../nav-button/nav-button';
+
 import {AuthService} from '../../../core/services/auth.service';
+import {NavButton} from '../../nav-button/nav-button';
 
 @Component({
-  selector: 'app-burger-menu',
-  imports: [
-    NavButton
-  ],
-  templateUrl: './burger-menu.html',
-  styleUrl: './burger-menu.scss',
+	selector: 'app-burger-menu',
+	imports: [NavButton],
+	templateUrl: './burger-menu.html',
+	styleUrl: './burger-menu.scss',
 })
 export class BurgerMenu {
+	private authService: AuthService;
 
-  private authService: AuthService;
+	@Input()
+	open: boolean = false;
 
-  constructor(authService: AuthService) {
-    this.authService = authService;
-  }
+	@Output()
+	closed = new EventEmitter<void>();
 
-  @Input()
-  open: boolean = false;
+	constructor(authService: AuthService) {
+		this.authService = authService;
+	}
 
-  @Output()
-  closed = new EventEmitter<void>();
+	logoutAndClose(): void {
+		this.authService.logout();
+		this.close();
+	}
 
-  logoutAndClose(): void {
-    this.authService.logout();
-    this.close();
-  }
-
-  close(): void {
-    this.closed.emit();
-  }
+	close(): void {
+		this.closed.emit();
+	}
 }
