@@ -112,16 +112,14 @@ app-root {
 ::view-transition-group(page-content) {
 	animation-duration: 300ms;
 
-	animation-timing-function:
-		cubic-bezier(0.4, 0, 0.2, 1);
+	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ::view-transition-old(page-content),
 ::view-transition-new(page-content) {
 	animation-duration: 300ms;
 
-	animation-timing-function:
-		cubic-bezier(0.4, 0, 0.2, 1);
+	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
 	animation-fill-mode: both;
 
@@ -250,4 +248,8 @@ textarea,
 	align-items: center;
 
 	gap: 0.75rem;
+}
+
+.clickable {
+	cursor: pointer;
 }

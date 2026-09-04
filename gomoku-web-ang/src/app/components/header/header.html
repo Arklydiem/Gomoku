@@ -1,22 +1,22 @@
 <header>
 	<div class="left">
-		<h1>Gomoku</h1>
+		<h1 (click)="changePage('/home')" class="clickable">Gomoku</h1>
 	</div>
 
 	<div class="center">
 		<nav>
-			<app-nav-button [methodToCall]="() => changePage('/home')"
-				[active]="currentPage === '/home'">
+			<app-nav-button [active]="currentPage === '/home'"
+			                [methodToCall]="() => changePage('/home')">
 				Home
 			</app-nav-button>
 
-			<app-nav-button [methodToCall]="() => changePage('/game')"
-				[active]="currentPage.startsWith('/game')">
+			<app-nav-button [active]="currentPage.startsWith('/game')"
+			                [methodToCall]="() => changePage('/game')">
 				Game
 			</app-nav-button>
 
-			<app-nav-button [methodToCall]="() => changePage('/scoreboard')"
-				[active]="currentPage === '/scoreboard'">
+			<app-nav-button [active]="currentPage === '/scoreboard'"
+			                [methodToCall]="() => changePage('/scoreboard')">
 				Scoreboard
 			</app-nav-button>
 		</nav>
@@ -24,13 +24,13 @@
 
 	<div class="right">
 		@if (!authService.isLoggedIn()) {
-			<app-nav-button [methodToCall]="() => changePage('/auth/login')"
-				[active]="currentPage === '/auth/login'">
+			<app-nav-button [active]="currentPage === '/auth/login'"
+			                [methodToCall]="() => changePage('/auth/login')">
 				Login
 			</app-nav-button>
 
-			<app-nav-button [methodToCall]="() => changePage('/auth/register')"
-				[active]="currentPage === '/auth/register'">
+			<app-nav-button [active]="currentPage === '/auth/register'"
+			                [methodToCall]="() => changePage('/auth/register')">
 				Register
 			</app-nav-button>
 		} @else {
@@ -38,8 +38,8 @@
 				<app-icon name="burger-menu"/>
 			</app-nav-button>
 
-			<app-burger-menu [open]="isBurgerMenuOpen"
-				(closed)="closeBurgerMenu()"/>
+			<app-burger-menu (closed)="closeBurgerMenu()"
+			                 [open]="isBurgerMenuOpen"/>
 		}
 	</div>
 </header>

@@ -14,19 +14,15 @@ import {NavButton} from '../nav-button/nav-button';
 	standalone: true,
 })
 export class Header implements OnInit {
-	private readonly router = inject(Router);
-
 	currentPage: string = '/home';
 	isBurgerMenuOpen: boolean = false;
+	private readonly router = inject(Router);
 
-	constructor(public readonly authService: AuthService) {}
+	constructor(public readonly authService: AuthService) {
+	}
 
 	ngOnInit(): void {
 		this.router.events.subscribe(() => this.updateActivePage());
-	}
-
-	private updateActivePage(): void {
-		this.currentPage = this.router.url;
 	}
 
 	changePage(page: string): void {
@@ -39,5 +35,9 @@ export class Header implements OnInit {
 
 	closeBurgerMenu(): void {
 		this.isBurgerMenuOpen = false;
+	}
+
+	private updateActivePage(): void {
+		this.currentPage = this.router.url;
 	}
 }
