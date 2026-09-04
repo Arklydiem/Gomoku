@@ -4,15 +4,15 @@
 			GAME CENTER
 		</span>
 
-		<nav class="hub-tabs"
-			[attr.data-mode]="mode()"
-			aria-label="Game center">
+		<nav [attr.data-mode]="mode()"
+		     aria-label="Game center"
+		     class="hub-tabs">
 
-			<a routerLink="/game/create" [class.active]="mode() === 'create'">Create</a>
+			<a [class.active]="mode() === 'create'" routerLink="/game/create">Create</a>
 
-			<a routerLink="/game/join" [class.active]="mode() === 'join'">Join</a>
+			<a [class.active]="mode() === 'join'" routerLink="/game/join">Join</a>
 
-			<a routerLink="/game/spectate" [class.active]="mode() === 'spectate'">Spectate</a>
+			<a [class.active]="mode() === 'spectate'" routerLink="/game/spectate">Spectate</a>
 		</nav>
 	</header>
 
@@ -23,7 +23,7 @@
 	}
 
 	<div class="hub-viewport">
-		<div class="hub-track" [attr.data-mode]="mode()">
+		<div [attr.data-mode]="mode()" class="hub-track">
 
 			<section class="hub-panel">
 				<header class="panel-intro">
@@ -32,11 +32,11 @@
 				</header>
 
 				<section class="create-grid">
-					<button type="button"
-						class="create-card"
-						[class.disabled]="isCreateCardDisabled(GameTypeEnum.SOLO)"
-						[disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.SOLO)"
-						(click)="createGame(GameTypeEnum.SOLO)">
+					<button (click)="createGame(GameTypeEnum.SOLO)"
+					        [class.disabled]="isCreateCardDisabled(GameTypeEnum.SOLO)"
+					        [disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.SOLO)"
+					        class="create-card"
+					        type="button">
 
 						<div class="card-content">
 							<span class="card-tag">LOCAL</span>
@@ -44,18 +44,18 @@
 							<p>Start a solo game and control each stone color.</p>
 						</div>
 
-						<app-icon class="card-arrow"
-							name="arrow"
-							[rotation]="180"
-							[size]="22">
+						<app-icon [rotation]="180"
+						          [size]="22"
+						          class="card-arrow"
+						          name="arrow">
 						</app-icon>
 					</button>
 
-					<button type="button"
-						class="create-card"
-						[class.disabled]="isCreateCardDisabled(GameTypeEnum.PLAYER_VS_PLAYER)"
-						[disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.PLAYER_VS_PLAYER)"
-						(click)="createGame(GameTypeEnum.PLAYER_VS_PLAYER)">
+					<button (click)="createGame(GameTypeEnum.PLAYER_VS_PLAYER)"
+					        [class.disabled]="isCreateCardDisabled(GameTypeEnum.PLAYER_VS_PLAYER)"
+					        [disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.PLAYER_VS_PLAYER)"
+					        class="create-card"
+					        type="button">
 
 						<div class="card-content">
 							<span class="card-tag">MULTIPLAYER</span>
@@ -63,18 +63,18 @@
 							<p>Create a match and challenge an opponent.</p>
 						</div>
 
-						<app-icon class="card-arrow"
-							name="arrow"
-							[rotation]="180"
-							[size]="22">
+						<app-icon [rotation]="180"
+						          [size]="22"
+						          class="card-arrow"
+						          name="arrow">
 						</app-icon>
 					</button>
 
-					<button type="button"
-						class="create-card"
-						[class.disabled]="isCreateCardDisabled(GameTypeEnum.PLAYER_VS_AI)"
-						[disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.PLAYER_VS_AI)"
-						(click)="createGame(GameTypeEnum.PLAYER_VS_AI)">
+					<button (click)="createGame(GameTypeEnum.PLAYER_VS_AI)"
+					        [class.disabled]="isCreateCardDisabled(GameTypeEnum.PLAYER_VS_AI)"
+					        [disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.PLAYER_VS_AI)"
+					        class="create-card"
+					        type="button">
 
 						<div class="card-content">
 							<span class="card-tag">AI</span>
@@ -82,18 +82,18 @@
 							<p>Challenge an AI in a standard match.</p>
 						</div>
 
-						<app-icon class="card-arrow"
-							name="arrow"
-							[rotation]="180"
-							[size]="22">
+						<app-icon [rotation]="180"
+						          [size]="22"
+						          class="card-arrow"
+						          name="arrow">
 						</app-icon>
 					</button>
 
-					<button type="button"
-						class="create-card"
-						[class.disabled]="isCreateCardDisabled(GameTypeEnum.AI_VS_AI)"
-						[disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.AI_VS_AI)"
-						(click)="createGame(GameTypeEnum.AI_VS_AI)">
+					<button (click)="createGame(GameTypeEnum.AI_VS_AI)"
+					        [class.disabled]="isCreateCardDisabled(GameTypeEnum.AI_VS_AI)"
+					        [disabled]="actionLoading() || isCreateCardDisabled(GameTypeEnum.AI_VS_AI)"
+					        class="create-card"
+					        type="button">
 
 						<div class="card-content">
 							<span class="card-tag">AI</span>
@@ -101,10 +101,10 @@
 							<p>Amusing to see the same AI playing against itself.</p>
 						</div>
 
-						<app-icon class="card-arrow"
-							name="arrow"
-							[rotation]="180"
-							[size]="22">
+						<app-icon [rotation]="180"
+						          [size]="22"
+						          class="card-arrow"
+						          name="arrow">
 						</app-icon>
 					</button>
 				</section>
@@ -128,27 +128,27 @@
 					</div>
 
 					<div class="uuid-form">
-						<input type="text"
-							autocomplete="off"
-							class="uuid-input"
-							placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-							[value]="gameId()"
-							(input)="updateGameId($event)"
-							(keydown.enter)="joinGameById()">
+						<input (input)="updateGameId($event)"
+						       (keydown.enter)="joinGameById()"
+						       [value]="gameId()"
+						       autocomplete="off"
+						       class="uuid-input"
+						       placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+						       type="text">
 
-						<button type="button"
-							class="primary-action"
-							[disabled]="actionLoading()"
-							(click)="joinGameById()">
+						<button (click)="joinGameById()"
+						        [disabled]="actionLoading()"
+						        class="primary-action"
+						        type="button">
 
 							@if (actionLoading()) {
 								Joining...
 							} @else {
 								Join game
 
-								<app-icon name="arrow"
-									[rotation]="180"
-									[size]="18">
+								<app-icon [rotation]="180"
+								          [size]="18"
+								          name="arrow">
 								</app-icon>
 							}
 						</button>
@@ -162,10 +162,10 @@
 							<h2>Your games</h2>
 						</div>
 
-						<button type="button"
-							class="refresh-button"
-							[disabled]="loading()"
-							(click)="refreshGames()">
+						<button (click)="refreshGames()"
+						        [disabled]="loading()"
+						        class="refresh-button"
+						        type="button">
 							Refresh
 						</button>
 					</div>
@@ -178,16 +178,16 @@
 						<div class="empty-state">
 							Loading your games...
 						</div>
-					} @else if (myGames().length === 0) {
+					} @else if (games().length === 0) {
 						<div class="empty-state">
 							You do not have any game yet.
 						</div>
 					} @else {
 						<div class="games-list">
-							@for (game of myGames(); track game.uuid) {
-								<button type="button"
-									class="game-row"
-									(click)="openPlayerGame(game)">
+							@for (game of games(); track game.uuid) {
+								<button (click)="openPlayerGame(game)"
+								        class="game-row"
+								        type="button">
 
 									<div class="game-main">
 										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
@@ -208,9 +208,9 @@
 									<span class="row-action">
 										Open
 
-										<app-icon name="arrow"
-											[rotation]="180"
-											[size]="16">
+										<app-icon [rotation]="180"
+										          [size]="16"
+										          name="arrow">
 										</app-icon>
 									</span>
 								</button>
@@ -219,59 +219,14 @@
 					}
 				</section>
 
-				<section class="games-section">
-					<div class="section-heading">
-						<div>
-							<span class="section-kicker">AVAILABLE</span>
-							<h2>Public games</h2>
-						</div>
-					</div>
-
-					@if (loading()) {
-						<div class="empty-state">
-							Loading public games...
-						</div>
-					} @else if (publicGames().length === 0) {
-						<div class="empty-state">
-							No public game is currently available.
-						</div>
-					} @else {
-						<div class="games-list">
-							@for (game of publicGames(); track game.uuid) {
-								<button type="button"
-									class="game-row"
-									[disabled]="actionLoading()"
-									(click)="joinGame(game.uuid)">
-
-									<div class="game-main">
-										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
-										<span class="game-uuid selectable">{{ game.uuid }}</span>
-									</div>
-
-									<div class="game-meta">
-										<span>
-											{{ game.players.length }}
-											player{{ game.players.length === 1 ? '' : 's' }}
-										</span>
-
-										<span class="status-badge">
-											{{ game.status | enumFormat:'title' }}
-										</span>
-									</div>
-
-									<span class="row-action">
-										Join
-
-										<app-icon name="arrow"
-											[rotation]="180"
-											[size]="16">
-										</app-icon>
-									</span>
-								</button>
-							}
-						</div>
-					}
-				</section>
+				<!--				<section class="games-section">-->
+				<!--					<div class="section-heading">-->
+				<!--						<div>-->
+				<!--							<span class="section-kicker">AVAILABLE</span>-->
+				<!--							<h2>Public games</h2>-->
+				<!--						</div>-->
+				<!--					</div>-->
+				<!--				</section>-->
 			</section>
 
 			<section class="hub-panel">
@@ -287,10 +242,10 @@
 							<h2>Games</h2>
 						</div>
 
-						<button type="button"
-							class="refresh-button"
-							[disabled]="loading()"
-							(click)="refreshGames()">
+						<button (click)="refreshGames()"
+						        [disabled]="loading()"
+						        class="refresh-button"
+						        type="button">
 							Refresh
 						</button>
 					</div>
@@ -306,9 +261,9 @@
 					} @else {
 						<div class="games-list">
 							@for (game of games(); track game.uuid) {
-								<button type="button"
-									class="game-row"
-									(click)="spectateGame(game)">
+								<button (click)="spectateGame(game)"
+								        class="game-row"
+								        type="button">
 
 									<div class="game-main">
 										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
@@ -329,9 +284,9 @@
 									<span class="row-action">
 										Spectate
 
-										<app-icon name="arrow"
-											[rotation]="180"
-											[size]="16">
+										<app-icon [rotation]="180"
+										          [size]="16"
+										          name="arrow">
 										</app-icon>
 									</span>
 								</button>

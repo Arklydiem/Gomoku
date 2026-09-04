@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, input, signal} from '@angular/core';
+import {Component, effect, inject, input, signal} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {finalize} from 'rxjs';
 
@@ -31,23 +31,6 @@ export class GameHub {
 		[GameTypeEnum.PLAYER_VS_AI]: 'disabled',
 		[GameTypeEnum.AI_VS_AI]: 'disabled',
 	};
-
-	readonly myGames = computed(() => {
-		const userUuid = this.authService.user()?.uuid;
-
-		if (!userUuid) {
-			return [];
-		}
-
-		return this.games().filter(game => game.players.some(player => player.uuid === userUuid));
-	});
-
-	readonly publicGames = computed(() => {
-		const myGameUuids = new Set(this.myGames().map(game => game.uuid));
-
-		return this.games().filter(game => this.isJoinable(game) && !myGameUuids.has(game.uuid));
-	});
-
 	protected readonly GameTypeEnum = GameTypeEnum;
 	private readonly router = inject(Router);
 	private readonly gameService = inject(GameService);
@@ -158,6 +141,9 @@ export class GameHub {
 					this.errorMessage.set('Unable to load the games.');
 				},
 			});
+
+		this.gamesLoaded.set(true);
+		this.loading.set(false);
 	}
 
 	private isJoinable(game: GameModel): boolean {
