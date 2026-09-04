@@ -31,17 +31,19 @@ public class GameTurnEntity {
     @Setter(AccessLevel.NONE)
     private UUID uuid;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "game_id", nullable = false)
+    private GameEntity game;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "game_player_id", nullable = false)
+    private GamePlayerEntity gamePlayer;
+
     @Column(
             name = "turn_number",
             nullable = false
     )
     private int turnNumber;
-
-    @Column(
-            name = "player_uuid",
-            nullable = false
-    )
-    private UUID playerUuid;
 
     @Embedded
     @AttributeOverrides({

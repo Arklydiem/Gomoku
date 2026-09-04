@@ -18,28 +18,24 @@ public class GameController {
 
     private final GameService gameService;
 
-    @GetMapping()
-    public ResponseEntity<List<GameDto>> getGames() {
-        return ResponseEntity.ok(
-                gameService.getGames()
-        );
+    @GetMapping
+    public ResponseEntity<List<GameDto>> getGames(@RequestParam(required = false) final UUID userUUID) {
+        if (userUUID != null) {
+            return ResponseEntity.ok(gameService.getGamesByUserUUID(userUUID));
+        }
+
+        return ResponseEntity.ok(gameService.getGames());
     }
 
     @PostMapping
-    public ResponseEntity<GameDto> createGame(
-            @RequestParam final GameType gameType
-    ) {
+    public ResponseEntity<GameDto> createGame(@RequestParam final GameType gameType) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(gameService.createGame(gameType));
     }
 
     @GetMapping("/{gameUuid}")
-    public ResponseEntity<GameDto> getGame(
-            @PathVariable final UUID gameUuid
-    ) {
-        return ResponseEntity.ok(
-                gameService.getGame(gameUuid)
-        );
+    public ResponseEntity<GameDto> getGame(@PathVariable final UUID gameUuid) {
+        return ResponseEntity.ok(gameService.getGame(gameUuid));
     }
 }

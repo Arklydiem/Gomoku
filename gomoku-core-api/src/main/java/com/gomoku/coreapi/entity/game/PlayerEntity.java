@@ -1,7 +1,6 @@
 package com.gomoku.coreapi.entity.game;
 
 import com.gomoku.coreapi.enums.PlayerType;
-import com.gomoku.coreapi.enums.StoneColor;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +9,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "game_players")
+@Table(name = "players")
 @Getter
 @Setter
 public class PlayerEntity {
@@ -41,8 +40,4 @@ public class PlayerEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PlayerType type;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StoneColor color;
 }

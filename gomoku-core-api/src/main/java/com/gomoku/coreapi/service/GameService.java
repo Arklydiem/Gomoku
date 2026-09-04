@@ -22,38 +22,38 @@ public class GameService {
 
     @Transactional
     public GameDto createGame(final GameType gameType) {
-
         GameEntity game = new GameEntity();
-
         game.setGameType(gameType);
         game.setStatus(GameStatus.CREATED);
 
-        GameEntity savedGame =
-                gameRepository.save(game);
+        GameEntity savedGame = gameRepository.save(game);
 
         return gameMapper.entityToDto(savedGame);
     }
 
     @Transactional(readOnly = true)
     public GameDto getGame(final UUID gameUuid) {
-
         GameEntity game = gameRepository
                 .findByUuid(gameUuid)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "Game not found: " + gameUuid
-                        )
-                );
+                .orElseThrow(() -> new IllegalArgumentException("Game not found: " + gameUuid));
 
         return gameMapper.entityToDto(game);
     }
 
     @Transactional(readOnly = true)
     public List<GameDto> getGames() {
+        return gameRepository
+                .findAll()
+                .stream()
+                .map(gameMapper::entityToDto)
+                .toList();
+    }
 
-        List<GameEntity> games = gameRepository.findAll();
-
-        return games.stream()
+    @Transactional(readOnly = true)
+    public List<GameDto> getGamesByUserUUID(final UUID userUUID) {
+        return gameRepository
+                .findGamesByUserUuid(userUUID)
+                .stream()
                 .map(gameMapper::entityToDto)
                 .toList();
     }

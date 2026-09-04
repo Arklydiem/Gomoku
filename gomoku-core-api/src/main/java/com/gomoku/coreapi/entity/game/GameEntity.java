@@ -62,28 +62,38 @@ public class GameEntity {
     )
     private int whiteCaptures = 0;
 
-
     @OneToMany(
+            mappedBy = "game",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(
-            name = "game_id",
-            nullable = false
-    )
-    private List<PlayerEntity> players =
-            new ArrayList<>();
-
+    private List<GamePlayerEntity> gamePlayers = new ArrayList<>();
 
     @OneToMany(
+            mappedBy = "game",
             cascade = CascadeType.ALL,
             orphanRemoval = true
-    )
-    @JoinColumn(
-            name = "game_id",
-            nullable = false
     )
     @OrderBy("turnNumber ASC")
-    private List<GameTurnEntity> turns =
-            new ArrayList<>();
+    private List<GameTurnEntity> turns = new ArrayList<>();
+
+    public void addGamePlayer(final GamePlayerEntity gamePlayer) {
+        gamePlayer.setGame(this);
+        gamePlayers.add(gamePlayer);
+    }
+
+    public void removeGamePlayer(final GamePlayerEntity gamePlayer) {
+        gamePlayers.remove(gamePlayer);
+        gamePlayer.setGame(null);
+    }
+
+    public void addTurn(final GameTurnEntity turn) {
+        turn.setGame(this);
+        turns.add(turn);
+    }
+
+    public void removeTurn(final GameTurnEntity turn) {
+        turns.remove(turn);
+        turn.setGame(null);
+    }
 }

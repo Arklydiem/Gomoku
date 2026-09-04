@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="
-            http://www.liquibase.org/xml/ns/dbchangelog
-            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+		http://www.liquibase.org/xml/ns/dbchangelog
+		https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="202608311110-create-users" author="argomez">
 
@@ -59,6 +59,60 @@
             CREATE UNIQUE INDEX uk_users_email_lower
                 ON users (LOWER(email));
         </sql>
+
+    </changeSet>
+
+    <changeSet id="202609011609-create-players" author="argomez">
+
+        <createTable tableName="players">
+
+            <column name="id"
+                    type="BIGINT"
+                    autoIncrement="true">
+                <constraints
+                        primaryKey="true"
+                        nullable="false"
+                        primaryKeyName="pk_players"/>
+            </column>
+
+            <column name="uuid"
+                    type="UUID">
+                <constraints
+                        nullable="false"
+                        unique="true"
+                        uniqueConstraintName="uk_players_uuid"/>
+            </column>
+
+            <column name="user_uuid"
+                    type="UUID"/>
+
+            <column name="name"
+                    type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="type"
+                    type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="fk_players_user"
+                baseTableName="players"
+                baseColumnNames="user_uuid"
+                referencedTableName="users"
+                referencedColumnNames="uuid"
+                onDelete="SET NULL"/>
+
+        <createIndex
+                indexName="idx_players_user_uuid"
+                tableName="players">
+
+            <column name="user_uuid"/>
+
+        </createIndex>
 
     </changeSet>
 
@@ -125,29 +179,13 @@
                         primaryKeyName="pk_game_players"/>
             </column>
 
-            <column name="uuid"
-                    type="UUID">
-                <constraints
-                        nullable="false"
-                        unique="true"
-                        uniqueConstraintName="uk_game_players_uuid"/>
-            </column>
-
             <column name="game_id"
                     type="BIGINT">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="user_uuid"
-                    type="UUID"/>
-
-            <column name="name"
-                    type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="type"
-                    type="VARCHAR(20)">
+            <column name="player_id"
+                    type="BIGINT">
                 <constraints nullable="false"/>
             </column>
 
@@ -166,14 +204,17 @@
                 referencedColumnNames="id"
                 onDelete="CASCADE"/>
 
-
         <addForeignKeyConstraint
-                constraintName="fk_game_players_user"
+                constraintName="fk_game_players_player"
                 baseTableName="game_players"
-                baseColumnNames="user_uuid"
-                referencedTableName="users"
-                referencedColumnNames="uuid"
-                onDelete="SET NULL"/>
+                baseColumnNames="player_id"
+                referencedTableName="players"
+                referencedColumnNames="id"/>
+
+        <addUniqueConstraint
+                constraintName="uk_game_players_game_player"
+                tableName="game_players"
+                columnNames="game_id,player_id"/>
 
         <addUniqueConstraint
                 constraintName="uk_game_players_game_color"
@@ -188,12 +229,11 @@
 
         </createIndex>
 
-
         <createIndex
-                indexName="idx_game_players_user_uuid"
+                indexName="idx_game_players_player_id"
                 tableName="game_players">
 
-            <column name="user_uuid"/>
+            <column name="player_id"/>
 
         </createIndex>
 
@@ -225,8 +265,8 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="player_uuid"
-                    type="UUID">
+            <column name="game_player_id"
+                    type="BIGINT">
                 <constraints nullable="false"/>
             </column>
 
@@ -261,11 +301,11 @@
                 onDelete="CASCADE"/>
 
         <addForeignKeyConstraint
-                constraintName="fk_game_turns_player"
+                constraintName="fk_game_turns_game_player"
                 baseTableName="game_turns"
-                baseColumnNames="player_uuid"
+                baseColumnNames="game_player_id"
                 referencedTableName="game_players"
-                referencedColumnNames="uuid"/>
+                referencedColumnNames="id"/>
 
         <addUniqueConstraint
                 constraintName="uk_game_turns_game_turn_number"
@@ -281,10 +321,10 @@
         </createIndex>
 
         <createIndex
-                indexName="idx_game_turns_player_uuid"
+                indexName="idx_game_turns_game_player_id"
                 tableName="game_turns">
 
-            <column name="player_uuid"/>
+            <column name="game_player_id"/>
 
         </createIndex>
 

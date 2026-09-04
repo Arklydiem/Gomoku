@@ -19,16 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final UserRepository userRepository;
-
     private final UserMapper userMapper;
-
     private final PasswordEncoder passwordEncoder;
-
     private final JwtService jwtService;
+    private final PlayerService playerService;
 
     @Transactional
     public AuthResponse register(final RegisterRequestDto request) {
-
         checkUsernameAndEmail(request);
 
         UserEntity userEntity = new UserEntity();
@@ -37,32 +34,26 @@ public class AuthService {
         userEntity.setPasswordHash(passwordEncoder.encode(request.password()));
 
         userEntity = userRepository.save(userEntity);
+        playerService.createRealPlayer(userEntity);
 
         return generateAuthResponse(userEntity);
     }
 
     public AuthResponse login(final LoginRequestDto request) {
         final UserEntity userEntity = userRepository
-                .findByUsernameIgnoreCaseOrEmailIgnoreCase(
-                        request.login(),
-                        request.login()
-                )
-                .orElseThrow(() ->
-                        new InvalidCredentialsException("Invalid credentials")
-                );
+                .findByUsernameIgnoreCaseOrEmailIgnoreCase(request.login(), request.login())
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
 
-        if (!passwordEncoder.matches(
-                request.password(),
-                userEntity.getPasswordHash()
-        )) {
+        if (!passwordEncoder.matches(request.password(), userEntity.getPasswordHash())) {
             throw new InvalidCredentialsException("Invalid credentials");
         }
+
+        playerService.createRealPlayer(userEntity);
 
         return generateAuthResponse(userEntity);
     }
 
     private void checkUsernameAndEmail(final RegisterRequestDto request) {
-
         if (userRepository.existsByUsernameIgnoreCase(request.username())) {
             throw new UserAlreadyExistsException("Username already exists");
         }
@@ -73,12 +64,8 @@ public class AuthService {
     }
 
     private AuthResponse generateAuthResponse(final UserEntity userEntity) {
-
         final String token = jwtService.generateToken(userEntity);
 
-        return new AuthResponse(
-                token,
-                userMapper.toDto(userEntity)
-        );
+        return new AuthResponse(token, userMapper.toDto(userEntity));
     }
 }
