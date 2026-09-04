@@ -29,6 +29,15 @@ public class PlayerService {
     }
 
     @Transactional
+    public PlayerEntity createGuestPlayer() {
+        PlayerEntity player = new PlayerEntity();
+        player.setName("Guest");
+        player.setType(PlayerType.REAL);
+
+        return playerRepository.save(player);
+    }
+
+    @Transactional
     public PlayerEntity createAiPlayer(final String name) {
         PlayerEntity player = new PlayerEntity();
         player.setName(name);

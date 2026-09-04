@@ -330,4 +330,41 @@
 
     </changeSet>
 
+
+    <changeSet id="202609041430-add-game-creator" author="argomez">
+
+        <addColumn tableName="games">
+            <column name="created_by_user_uuid"
+                    type="UUID">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                constraintName="fk_games_created_by_user"
+                baseTableName="games"
+                baseColumnNames="created_by_user_uuid"
+                referencedTableName="users"
+                referencedColumnNames="uuid"
+                onDelete="SET NULL"/>
+
+        <createIndex
+                indexName="idx_games_created_by_user_uuid"
+                tableName="games">
+
+            <column name="created_by_user_uuid"/>
+
+        </createIndex>
+
+        <dropUniqueConstraint
+                tableName="game_players"
+                constraintName="uk_game_players_game_player"/>
+
+        <addUniqueConstraint
+                constraintName="uk_players_user_uuid"
+                tableName="players"
+                columnNames="user_uuid"/>
+
+    </changeSet>
+
 </databaseChangeLog>

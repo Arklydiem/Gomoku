@@ -18,9 +18,13 @@ public interface GameRepository extends JpaRepository<GameEntity, Long> {
     @Query("""
             SELECT DISTINCT game
             FROM GameEntity game
-            JOIN game.gamePlayers gamePlayer
-            JOIN gamePlayer.player player
-            WHERE player.userUuid = :userUuid
+            LEFT JOIN game.createdBy creator
+            LEFT JOIN game.gamePlayers gamePlayer
+            LEFT JOIN gamePlayer.player player
+            WHERE creator.uuid = :userUuid
+               OR player.userUuid = :userUuid
             """)
     List<GameEntity> findGamesByUserUuid(@Param("userUuid") UUID userUuid);
+
+    List<GameEntity> findAllByCreatedBy_Uuid(UUID userUuid);
 }

@@ -19,4 +19,17 @@ public class GlobalExceptionHandler {
 
         return problem;
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ProblemDetail handleUserNotFound(
+            final UserNotFoundException exception
+    ) {
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+
+        problem.setTitle("User not found");
+        problem.setDetail(exception.getMessage());
+
+        return problem;
+    }
+
 }

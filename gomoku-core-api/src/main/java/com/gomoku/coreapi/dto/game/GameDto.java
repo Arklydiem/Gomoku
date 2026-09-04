@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public record GameDto(
         UUID uuid,
+        UUID createdByUserUuid,
         BoardDto board,
         List<PlayerDto> players,
         List<GameTurnDto> turns,

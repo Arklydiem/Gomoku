@@ -14,6 +14,7 @@ import org.mapstruct.Mapping;
 )
 public interface GameMapper {
 
+    @Mapping(target = "createdByUserUuid", source = "createdBy.uuid")
     @Mapping(target = "players", source = "gamePlayers")
     GameDto entityToDto(GameEntity entity);
 }

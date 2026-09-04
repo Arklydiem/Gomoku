@@ -19,12 +19,23 @@ public class GameController {
     private final GameService gameService;
 
     @GetMapping
-    public ResponseEntity<List<GameDto>> getGames(@RequestParam(required = false) final UUID userUUID) {
-        if (userUUID != null) {
-            return ResponseEntity.ok(gameService.getGamesByUserUUID(userUUID));
-        }
-
+    public ResponseEntity<List<GameDto>> getGames() {
         return ResponseEntity.ok(gameService.getGames());
+    }
+
+    @GetMapping("/user-uuid/{userUuid}")
+    public ResponseEntity<List<GameDto>> getGamesByUserUuid(@PathVariable final UUID userUuid) {
+        return ResponseEntity.ok(gameService.getGamesByCreatorUuid(userUuid));
+    }
+
+    @GetMapping("/created-by-me")
+    public ResponseEntity<List<GameDto>> getGamesCreatedByMe() {
+        return ResponseEntity.ok(gameService.getGamesCreatedByMe());
+    }
+
+    @GetMapping("/created-by/{userUuid}")
+    public ResponseEntity<List<GameDto>> getGamesCreatedByUserUuid(@PathVariable final UUID userUuid) {
+        return ResponseEntity.ok(gameService.getGamesCreatedByUserUUID(userUuid));
     }
 
     @PostMapping

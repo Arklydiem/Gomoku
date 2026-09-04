@@ -1,5 +1,6 @@
 package com.gomoku.coreapi.entity.game;
 
+import com.gomoku.coreapi.entity.UserEntity;
 import com.gomoku.coreapi.enums.GameStatus;
 import com.gomoku.coreapi.enums.GameType;
 import com.gomoku.coreapi.enums.StoneColor;
@@ -34,6 +35,14 @@ public class GameEntity {
     )
     @Setter(AccessLevel.NONE)
     private UUID uuid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "created_by_user_uuid",
+            referencedColumnName = "uuid",
+            nullable = true
+    )
+    private UserEntity createdBy;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
