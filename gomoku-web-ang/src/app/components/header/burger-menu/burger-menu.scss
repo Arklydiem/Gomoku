@@ -19,13 +19,12 @@
 
 	pointer-events: none;
 
-	background: rgba(0, 0, 0, 0.55);
+	//background: rgba(0, 0, 0, 0.55);
 
 	backdrop-filter: blur(2px);
 
-	transition:
-		opacity 180ms ease,
-		visibility 180ms ease;
+	transition: opacity 180ms ease,
+	visibility 180ms ease;
 
 	&.open {
 		opacity: 1;
@@ -40,21 +39,63 @@
 }
 
 .burger-menu {
-	width: min(22rem, 90vw);
-	height: 100%;
+	box-sizing: border-box;
+
+	width: min(20rem, 85vw);
 
 	margin-left: auto;
 
 	padding: 1.5rem;
 
+	display: flex;
+	flex-direction: column;
+
 	background: rgba(24, 27, 34, 0.98);
 
 	border-left: 1px solid var(--border-soft);
 
-	box-shadow:
-		-20px 0 50px rgba(0, 0, 0, 0.35);
+	border-bottom: 1px solid var(--border-soft);
+
+	box-shadow: -20px 0 50px rgba(0, 0, 0, 0.35);
 
 	transform: translateX(100%);
 
 	transition: transform 250ms ease;
+}
+
+.main-navigation,
+.account-navigation {
+	display: flex;
+	flex-direction: column;
+
+	width: 100%;
+
+	gap: 0.5rem;
+}
+
+.main-navigation {
+	app-nav-button {
+		display: block;
+
+		width: 100%;
+	}
+}
+
+.account-navigation {
+	margin-top: auto;
+
+	app-nav-button {
+		display: block;
+
+		width: 100%;
+	}
+}
+
+.separator {
+	width: 100%;
+	height: 1px;
+
+	margin: 1.5rem 0;
+
+	background: var(--border-soft);
 }

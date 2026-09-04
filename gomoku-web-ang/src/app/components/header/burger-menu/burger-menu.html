@@ -1,12 +1,33 @@
-<div class="backdrop"
-	[class.open]="open"
-	(click)="close()">
+<div (click)="close()"
+     [class.open]="open"
+     class="backdrop">
 
-	<div class="burger-menu"
-		(click)="$event.stopPropagation()">
+	<div (click)="$event.stopPropagation()"
+	     class="burger-menu">
 
-		<app-nav-button [methodToCall]="() => logoutAndClose()">
-			Logout
-		</app-nav-button>
+		<nav class="main-navigation">
+			<app-nav-button [active]="currentPage === '/home'"
+			                [methodToCall]="() => changePage('/home')">
+				Home
+			</app-nav-button>
+
+			<app-nav-button [active]="currentPage.startsWith('/game')"
+			                [methodToCall]="() => changePage('/game')">
+				Game
+			</app-nav-button>
+
+			<app-nav-button [active]="currentPage === '/scoreboard'"
+			                [methodToCall]="() => changePage('/scoreboard')">
+				Scoreboard
+			</app-nav-button>
+		</nav>
+
+		<div class="separator"></div>
+
+		<nav class="account-navigation">
+			<app-nav-button [methodToCall]="() => logoutAndClose()">
+				Logout
+			</app-nav-button>
+		</nav>
 	</div>
 </div>
