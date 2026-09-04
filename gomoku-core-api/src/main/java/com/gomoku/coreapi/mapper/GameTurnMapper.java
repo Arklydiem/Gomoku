@@ -6,11 +6,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(
-        componentModel = "spring",
-        uses = MoveMapper.class
+		componentModel = "spring",
+		uses = MoveMapper.class
 )
 public interface GameTurnMapper {
 
-    @Mapping(target = "playerUuid", source = "gamePlayer.player.uuid")
-    GameTurnDto entityToDto(GameTurnEntity entity);
+	@Mapping(target = "playerUuid", source = "gamePlayer.player.uuid")
+	@Mapping(target = "color", source = "gamePlayer.color")
+	GameTurnDto entityToDto(GameTurnEntity entity);
 }

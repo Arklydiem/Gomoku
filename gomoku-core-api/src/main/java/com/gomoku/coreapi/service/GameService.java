@@ -117,6 +117,7 @@ public class GameService {
 
         addGamePlayer(game, player, StoneColor.BLACK);
         addGamePlayer(game, player, StoneColor.WHITE);
+        game.setCurrentTurn(StoneColor.BLACK);
     }
 
     private void configurePlayerVsPlayerPlayers(final GameEntity game, final UserEntity creator) {

@@ -8,14 +8,13 @@ import java.util.List;
 import java.util.UUID;
 
 public record GameDto(
-        UUID uuid,
-        UUID createdByUserUuid,
-        BoardDto board,
-        List<PlayerDto> players,
-        List<GameTurnDto> turns,
-        StoneColor currentTurn,
-        GameStatus status,
-        int blackCaptures,
-        int whiteCaptures,
-        GameType gameType
+		UUID uuid,
+		UUID createdByUserUuid,
+		List<PlayerDto> players,
+		List<GameTurnDto> turns,
+		StoneColor currentTurn,
+		GameStatus status,
+		int blackCaptures,
+		int whiteCaptures,
+		GameType gameType
 ) { }
