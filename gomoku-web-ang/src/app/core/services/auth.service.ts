@@ -11,13 +11,12 @@ import {UserModel} from '../../models/user.model';
 	providedIn: 'root',
 })
 export class AuthService {
+	readonly user = signal<UserModel | null>(null);
 	private readonly TOKEN_KEY = 'accessToken';
-
 	readonly isLoggedIn = signal(!!localStorage.getItem(this.TOKEN_KEY));
 
-	readonly user = signal<UserModel | null>(null);
-
-	constructor(private readonly authResource: AuthResource) {}
+	constructor(private readonly authResource: AuthResource) {
+	}
 
 	public login(request: LoginRequestModel): Observable<AuthResponseModel> {
 		return this.authResource.login(request).pipe(tap(response => this.authenticate(response)));
@@ -36,6 +35,18 @@ export class AuthService {
 
 	public getToken(): string | null {
 		return localStorage.getItem(this.TOKEN_KEY);
+	}
+
+	public getUserUuid(): string {
+		const user = this.user();
+
+		if (!user) {
+			return '';
+		}
+		
+		console.log(user);
+
+		return user.uuid;
 	}
 
 	private authenticate(response: AuthResponseModel): void {

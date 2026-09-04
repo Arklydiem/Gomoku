@@ -1,6 +1,6 @@
 import {Component, computed, effect, inject, input, signal} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import {catchError, finalize, forkJoin, map, of, switchMap} from 'rxjs';
+import {finalize} from 'rxjs';
 
 import {Icon} from '../../../components/icon/icon';
 import {AuthService} from '../../../core/services/auth.service';
@@ -18,20 +18,14 @@ import {CreateCardState, GameHubMode} from './game-hub.types';
 	styleUrl: './game-hub.scss',
 })
 export class GameHub {
-	private readonly router = inject(Router);
-	private readonly gameService = inject(GameService);
-	private readonly gamesLoaded = signal<boolean>(false);
-
 	readonly authService = inject(AuthService);
-
 	readonly mode = input.required<GameHubMode>();
 	readonly gameId = signal<string>('');
 	readonly games = signal<GameModel[]>([]);
 	readonly loading = signal<boolean>(false);
 	readonly actionLoading = signal<boolean>(false);
 	readonly errorMessage = signal<string | null>(null);
-
-	readonly createCardStates: Record<GameTypeEnum,CreateCardState> = {
+	readonly createCardStates: Record<GameTypeEnum, CreateCardState> = {
 		[GameTypeEnum.SOLO]: 'active',
 		[GameTypeEnum.PLAYER_VS_PLAYER]: 'disabled',
 		[GameTypeEnum.PLAYER_VS_AI]: 'disabled',
@@ -53,6 +47,11 @@ export class GameHub {
 
 		return this.games().filter(game => this.isJoinable(game) && !myGameUuids.has(game.uuid));
 	});
+
+	protected readonly GameTypeEnum = GameTypeEnum;
+	private readonly router = inject(Router);
+	private readonly gameService = inject(GameService);
+	private readonly gamesLoaded = signal<boolean>(false);
 
 	constructor() {
 		effect(() => {
@@ -142,7 +141,7 @@ export class GameHub {
 	}
 
 	private loadGames(): void {
-		if (this.loading()) {
+		if (this.loading() || !this.authService.isLoggedIn()) {
 			return;
 		}
 
@@ -150,29 +149,7 @@ export class GameHub {
 		this.errorMessage.set(null);
 
 		this.gameService
-			.getGames()
-			.pipe(
-				switchMap(({uuids}) => {
-					if (uuids.length === 0) {
-						return of([] as GameModel[]);
-					}
-
-					return forkJoin(
-						uuids.map(uuid =>
-							this.gameService.getGame(uuid).pipe(
-								catchError(error => {
-									console.warn(`Unable to load game ${uuid}:`, error);
-									return of(null);
-								}),
-							),
-						),
-					).pipe(map(games => games.filter((game): game is GameModel => game !== null)));
-				}),
-				finalize(() => {
-					this.loading.set(false);
-					this.gamesLoaded.set(true);
-				}),
-			)
+			.getGamesCreatedByMe()
 			.subscribe({
 				next: games => this.games.set(games),
 				error: error => {
@@ -186,6 +163,4 @@ export class GameHub {
 	private isJoinable(game: GameModel): boolean {
 		return game.status === GameStatusEnum.CREATED || game.status === GameStatusEnum.WAITING;
 	}
-
-	protected readonly GameTypeEnum = GameTypeEnum;
 }

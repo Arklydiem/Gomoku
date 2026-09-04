@@ -14,6 +14,14 @@ export class GameService {
 		return this.gameResource.getGames();
 	}
 
+	public getGamesCreatedByMe() {
+		return this.gameResource.getGamesCreatedByMe();
+	}
+
+	public getGamesByCreatorUuid(userUuid: string) {
+		return this.gameResource.getGamesByCreatorUuid(userUuid);
+	}
+
 	public getGame(gameId: string) {
 		return this.gameResource.getGame(gameId);
 	}
