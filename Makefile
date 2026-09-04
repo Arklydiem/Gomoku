@@ -35,4 +35,9 @@ backend-re:
 frontend:
 	$(DOCKER_COMPOSE) up --build -d $(WEB_ANG)
 
-.PHONY: all clean fclean re logs ps backend backend-re frontend
+frontend-re:
+	$(DOCKER_COMPOSE) stop $(WEB_ANG)
+	$(DOCKER_COMPOSE) rm -f $(WEB_ANG)
+	$(MAKE) frontend
+
+.PHONY: all clean fclean re logs ps backend backend-re frontend frontend-re
