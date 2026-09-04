@@ -13,7 +13,7 @@ import {GameAccessMode} from '../game-hub/game-hub.types';
 export class GameMatch {
 	readonly gameUuid = input.required<string>();
 	readonly accessMode = input.required<GameAccessMode>();
-	readonly game = signal<GameModel | null>;
+	readonly game = signal<GameModel | null>(null);
 	readonly loading = signal<boolean>(true);
 	readonly errorMessage = signal<string | null>(null);
 	private readonly gameService = inject(GameService);
