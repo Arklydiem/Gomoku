@@ -1,8 +1,9 @@
 import {inject, Injectable} from '@angular/core';
-
-import {GameResource} from '../resources/game.resource';
 import {Observable} from 'rxjs';
+
 import {GameModel} from '../../models/game.model';
+import {BoardPosition} from '../../shared/types/board.types';
+import {GameResource} from '../resources/game.resource';
 
 @Injectable({
 	providedIn: 'root',
@@ -36,5 +37,12 @@ export class GameService {
 
 	public startGame(gameId: string): Observable<GameModel> {
 		return this.gameResource.startGame(gameId);
+	}
+
+	public createTurn(gameUuid: string, position: BoardPosition): Observable<GameModel> {
+		return this.gameResource.createTurn(gameUuid, {
+			x: position.column,
+			y: position.row,
+		});
 	}
 }

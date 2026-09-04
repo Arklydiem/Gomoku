@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
-import {ApiResource} from '../config/api-resource';
 import {GameModel} from '../../models/game.model';
 import {GamesUuidsModel} from '../../models/games-uuids.model';
+import {MoveModel} from '../../models/move.model';
+import {ApiResource} from '../config/api-resource';
 
 @Injectable({
 	providedIn: 'root',
@@ -18,18 +19,18 @@ export class GameResource extends ApiResource {
 
 	public getGamesCreatedByMe(): Observable<GameModel[]> {
 		return this.request<GameModel[]>({
-				method: 'GET',
-				path: '/games/created-by-me',
-			}
-		);
+			method: 'GET',
+			path: '/games/created-by-me',
+		});
 	}
 
 	public getGamesByCreatorUuid(userUuid: string): Observable<GameModel[]> {
-		return this.request<GameModel[]>({
+		return this.request<GameModel[]>(
+			{
 				method: 'GET',
 				path: '/games/created-by/{userUuid}',
 			},
-			{userUuid}
+			{userUuid},
 		);
 	}
 
@@ -53,7 +54,7 @@ export class GameResource extends ApiResource {
 			null,
 			{
 				params: {
-					gameType: gameType,
+					gameType,
 				},
 			},
 		);
@@ -78,6 +79,17 @@ export class GameResource extends ApiResource {
 			},
 			{gameUuid},
 			null,
+		);
+	}
+
+	public createTurn(gameUuid: string, move: MoveModel): Observable<GameModel> {
+		return this.request<GameModel>(
+			{
+				method: 'POST',
+				path: '/games/{gameUuid}/turns',
+			},
+			{gameUuid},
+			move,
 		);
 	}
 }

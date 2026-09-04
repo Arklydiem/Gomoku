@@ -1,14 +1,15 @@
-import {StoneColorEnum} from '../shared/enums/stone-color.enum';
 import {GameStatusEnum} from '../shared/enums/game-status.enum';
 import {GameTypeEnum} from '../shared/enums/game-type.enum';
-import {BoardModel} from './board.model';
+import {StoneColorEnum} from '../shared/enums/stone-color.enum';
+import {GameTurnModel} from './game-turn.model';
 import {PlayerModel} from './player.model';
 
 export interface GameModel {
 	uuid: string;
-	board: BoardModel;
+	createdByUserUuid: string | null;
 	players: PlayerModel[];
-	currentTurn: StoneColorEnum;
+	turns: GameTurnModel[];
+	currentTurn: StoneColorEnum | null;
 	status: GameStatusEnum;
 	blackCaptures: number;
 	whiteCaptures: number;

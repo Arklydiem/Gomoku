@@ -41,9 +41,14 @@
 			</aside>
 
 			<main class="board-container">
-				<div class="board-placeholder">
-					GAME BOARD
-				</div>
+				<app-game-board
+					[board]="board()"
+					[disabled]="isSpectator() || turnLoading()"
+					(positionSelected)="play($event)"/>
+
+				@if (turnErrorMessage()) {
+					<div class="turn-error">{{ turnErrorMessage() }}</div>
+				}
 			</main>
 
 			<aside class="player-panel">
