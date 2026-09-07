@@ -1,0 +1,9 @@
+@if (toastService.toast(); as toast) {
+	<div (click)="toastService.hide()"
+	     [class.error]="toast.type === 'error'"
+	     [class.info]="toast.type === 'info'"
+	     [class.success]="toast.type === 'success'"
+	     class="toast">
+		{{ toast.message }}
+	</div>
+}

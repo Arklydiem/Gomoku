@@ -1,0 +1,49 @@
+:host {
+	position: fixed;
+	z-index: 1000;
+	bottom: 1.5rem;
+	left: calc(50% - 8rem);
+
+	pointer-events: none;
+}
+
+.toast {
+	min-width: 16rem;
+	max-width: 24rem;
+	padding: 0.9rem 1.1rem;
+
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 0.5rem;
+
+	background: #1c1c1c;
+	color: #fff;
+
+	font-size: 0.9rem;
+
+	box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.3);
+
+	animation: toast-in 180ms ease-out;
+
+	cursor: pointer;
+	pointer-events: auto;
+
+	&.error {
+		border-color: rgba(220, 70, 70, 0.7);
+	}
+
+	&.success {
+		border-color: rgba(80, 190, 110, 0.7);
+	}
+}
+
+@keyframes toast-in {
+	from {
+		opacity: 0;
+		transform: translateY(-0.5rem);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
