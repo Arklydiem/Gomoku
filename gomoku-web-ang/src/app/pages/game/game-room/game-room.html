@@ -1,0 +1,89 @@
+<section class="game-room">
+	@if (loading()) {
+		<div class="room-state">
+			Loading game...
+		</div>
+	} @else if (errorMessage()) {
+		<div class="room-state room-state-error">
+			{{ errorMessage() }}
+		</div>
+	} @else if (game(); as currentGame) {
+		@if (isLobbyVisible()) {
+			<app-game-lobby
+				[game]="currentGame"
+				[accessMode]="accessMode()"
+				[isCreator]="isCreator()"
+				[actionLoading]="actionLoading()"
+				(visibilityChanged)="changeVisibility($event)"
+				(startRequested)="startGame()"/>
+
+			@if (actionErrorMessage()) {
+				<div class="action-error">{{ actionErrorMessage() }}</div>
+			}
+		} @else if (isBoardVisible()) {
+			<header class="game-header">
+				<div class="game-title">
+					<span class="eyebrow">MATCH</span>
+					<h1>Gomoku</h1>
+				</div>
+
+				<div class="game-meta">
+					<span class="game-status">{{ currentGame.status | enumFormat:'title' }}</span>
+
+					@if (isSpectator()) {
+						<span class="spectator-badge">Spectator</span>
+					}
+				</div>
+			</header>
+
+			<div class="game-layout">
+				<aside class="player-panel">
+					<div class="player-card">
+						<span class="stone black"></span>
+
+						<div class="player-content">
+							<span class="player-label">BLACK</span>
+							<strong>{{ blackPlayer()?.name ?? 'Black player' }}</strong>
+						</div>
+					</div>
+
+					<div class="game-stat">
+						<span>Captures</span>
+						<strong>{{ currentGame.blackCaptures }}</strong>
+					</div>
+				</aside>
+
+				<main class="board-container">
+					<app-game-board
+						[board]="board()"
+						[disabled]="isSpectator() || turnLoading() || currentGame.status !== GameStatusEnum.IN_PROGRESS"
+						(positionSelected)="play($event)"/>
+
+					@if (turnErrorMessage()) {
+						<div class="turn-error">{{ turnErrorMessage() }}</div>
+					}
+				</main>
+
+				<aside class="player-panel">
+					<div class="player-card">
+						<span class="stone white"></span>
+
+						<div class="player-content">
+							<span class="player-label">WHITE</span>
+							<strong>{{ whitePlayer()?.name ?? 'White player' }}</strong>
+						</div>
+					</div>
+
+					<div class="game-stat">
+						<span>Captures</span>
+						<strong>{{ currentGame.whiteCaptures }}</strong>
+					</div>
+				</aside>
+			</div>
+		} @else {
+			<div class="room-state">
+				Game status: {{ currentGame.status | enumFormat:'title' }}
+			</div>
+		}
+	}
+</section>

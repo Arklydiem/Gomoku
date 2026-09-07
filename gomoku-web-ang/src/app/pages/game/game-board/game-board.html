@@ -1,0 +1,18 @@
+<div class="board">
+	<div class="board-surface" [style.--board-intervals]="boardSize() - 1">
+		@for (position of positions(); track position.row + '-' + position.column) {
+			<button type="button"
+				class="intersection"
+				[class.black]="getStone(position) === StoneColorEnum.BLACK"
+				[class.white]="getStone(position) === StoneColorEnum.WHITE"
+				[class.occupied]="isOccupied(position)"
+				[disabled]="disabled() || isOccupied(position)"
+				[style.left.%]="getPositionPercentage(position.column)"
+				[style.top.%]="getPositionPercentage(position.row)"
+				[attr.aria-label]="'Row ' + (position.row + 1) + ', column ' + (position.column + 1)"
+				(click)="selectPosition(position)">
+				<span class="stone"></span>
+			</button>
+		}
+	</div>
+</div>

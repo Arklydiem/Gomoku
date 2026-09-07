@@ -1,0 +1,123 @@
+<section class="game-lobby">
+	<header class="lobby-header">
+		<div>
+			<span class="eyebrow">ROOM</span>
+			<h1>Waiting room</h1>
+			<p>Prepare the room, invite another player and start when everyone is ready.</p>
+		</div>
+
+		<div class="room-badges">
+			<span class="status-badge">{{ game().status | enumFormat:'title' }}</span>
+
+			@if (accessMode() === 'spectator') {
+				<span class="spectator-badge">Spectator</span>
+			}
+		</div>
+	</header>
+
+	<div class="lobby-grid">
+		<section class="room-section players-section">
+			<div class="section-heading">
+				<div>
+					<span class="section-kicker">PLAYERS</span>
+					<h2>Room seats</h2>
+				</div>
+			</div>
+
+			<div class="players-grid">
+				<div class="player-card">
+					<span class="stone black"></span>
+
+					<div class="player-content">
+						<span class="player-label">BLACK</span>
+
+						@if (getPlayer(StoneColorEnum.BLACK); as player) {
+							<strong>{{ player.name }}</strong>
+						} @else {
+							<strong class="waiting-player">Waiting...</strong>
+						}
+					</div>
+				</div>
+
+				<div class="player-card">
+					<span class="stone white"></span>
+
+					<div class="player-content">
+						<span class="player-label">WHITE</span>
+
+						@if (getPlayer(StoneColorEnum.WHITE); as player) {
+							<strong>{{ player.name }}</strong>
+						} @else {
+							<strong class="waiting-player">Waiting...</strong>
+						}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="room-section access-section">
+			<div class="section-heading">
+				<div>
+					<span class="section-kicker">ACCESS</span>
+					<h2>Share the room</h2>
+				</div>
+			</div>
+
+			<div class="uuid-row">
+				<span class="room-uuid selectable">{{ game().uuid }}</span>
+
+				<button type="button" class="secondary-action" (click)="copyUuid()">
+					{{ copied() ? 'Copied' : 'Copy UUID' }}
+				</button>
+			</div>
+
+			@if (game().gameType === GameTypeEnum.PLAYER_VS_PLAYER) {
+				<div class="visibility-block">
+					<div class="visibility-copy">
+						<strong>Room visibility</strong>
+						<span>
+							{{ game().publicGame ? 'Visible in the public games list.' : 'Only players with the UUID can join.' }}
+						</span>
+					</div>
+
+				<div class="visibility-selector">
+					<button type="button"
+						[class.active]="!game().publicGame"
+						[disabled]="!canChangeVisibility() || actionLoading()"
+						(click)="setVisibility(false)">
+						Private
+					</button>
+
+					<button type="button"
+						[class.active]="game().publicGame"
+						[disabled]="!canChangeVisibility() || actionLoading()"
+						(click)="setVisibility(true)">
+						Public
+					</button>
+				</div>
+			</div>
+			}
+		</section>
+	</div>
+
+	<footer class="lobby-footer">
+		<div class="lobby-message">
+			@if (game().status === GameStatusEnum.WAITING) {
+				<strong>Waiting for another player.</strong>
+				<span>Share the UUID or make the room public.</span>
+			} @else if (game().status === GameStatusEnum.READY) {
+				<strong>The room is ready.</strong>
+				<span>{{ isCreator() ? 'You can start the game.' : 'Waiting for the room creator to start.' }}</span>
+			}
+		</div>
+
+		@if (canStart()) {
+			<button type="button"
+				class="primary-action"
+				[disabled]="actionLoading()"
+				(click)="startGame()">
+				{{ actionLoading() ? 'Starting...' : 'Start game' }}
+			</button>
+		}
+	</footer>
+</section>
