@@ -26,7 +26,7 @@ export class GameHub {
 	readonly loading = signal<boolean>(false);
 	readonly actionLoading = signal<boolean>(false);
 	readonly errorMessage = signal<string | null>(null);
-	readonly createCardStates: Record<GameTypeEnum,CreateCardState> = {
+	readonly createCardStates: Record<GameTypeEnum, CreateCardState> = {
 		[GameTypeEnum.SOLO]: 'active',
 		[GameTypeEnum.PLAYER_VS_PLAYER]: 'active',
 		[GameTypeEnum.PLAYER_VS_AI]: 'disabled',
@@ -46,6 +46,9 @@ export class GameHub {
 				untracked(() => this.loadGames(mode));
 			}
 		});
+		this.createCardStates.PLAYER_VS_PLAYER = this.authService.isLoggedIn() ? 'active' : 'disabled';
+		this.createCardStates.PLAYER_VS_AI = this.authService.isLoggedIn() ? 'active' : 'disabled';
+		this.createCardStates.AI_VS_AI = this.authService.isLoggedIn() ? 'active' : 'disabled';
 	}
 
 	public isCreateCardDisabled(gameType: GameTypeEnum): boolean {
