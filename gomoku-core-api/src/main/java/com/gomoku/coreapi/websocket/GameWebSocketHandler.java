@@ -2,6 +2,7 @@ package com.gomoku.coreapi.websocket;
 
 import com.gomoku.coreapi.dto.game.GameEventDto;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -26,7 +27,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     private final ConcurrentMap<UUID, Set<WebSocketSession>> sessionsByGame = new ConcurrentHashMap<>();
 
     @Override
-    public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(final @NonNull WebSocketSession session) throws Exception {
         Optional<UUID> gameUuid = resolveGameUuid(session);
 
         if (gameUuid.isEmpty()) {
@@ -40,7 +41,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionClosed(final WebSocketSession session, final CloseStatus status) {
+    public void afterConnectionClosed(final @NonNull WebSocketSession session, final @NonNull CloseStatus status) {
         resolveGameUuid(session).ifPresent(gameUuid -> {
             Set<WebSocketSession> sessions = sessionsByGame.get(gameUuid);
 
