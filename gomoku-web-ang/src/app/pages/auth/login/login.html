@@ -1,19 +1,19 @@
-<app-auth-container title="Login"
-	subtitle="Login to your Gomoku account">
+<app-auth-container subtitle="Login to your Gomoku account"
+                    title="Login">
 
-	<form class="auth-form"
-		[formGroup]="form"
-		(ngSubmit)="submit()">
+	<form (ngSubmit)="submit()"
+	      [formGroup]="form"
+	      class="auth-form">
 
 		<div class="field">
 			<label for="login">
 				Username or email
 			</label>
 
-			<input id="login"
-				type="text"
-				formControlName="login"
-				autocomplete="username">
+			<input autocomplete="username"
+			       formControlName="login"
+			       id="login"
+			       type="text">
 
 			@if (form.controls.login.touched && form.controls.login.invalid) {
 				<span class="field-error">
@@ -27,10 +27,10 @@
 				Password
 			</label>
 
-			<input id="password"
-				type="password"
-				formControlName="password"
-				autocomplete="current-password">
+			<input autocomplete="current-password"
+			       formControlName="password"
+			       id="password"
+			       type="password">
 
 			@if (form.controls.password.touched && form.controls.password.invalid) {
 				<span class="field-error">
@@ -39,16 +39,9 @@
 			}
 		</div>
 
-		@if (error) {
-			<div class="form-error">
-				{{ error }}
-			</div>
-		}
-
-		<button type="submit"
-			[disabled]="loading">
-
-			@if (loading) {
+		<button [disabled]="loading()"
+		        type="submit">
+			@if (loading()) {
 				Logging in...
 			} @else {
 				Login

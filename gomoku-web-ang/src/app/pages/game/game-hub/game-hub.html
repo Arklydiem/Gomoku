@@ -155,57 +155,58 @@
 					</div>
 				</section>
 
-				<section class="games-section">
-					<div class="section-heading">
-						<div>
-							<span class="section-kicker">YOUR MATCHES</span>
-							<h2>Your games</h2>
+				@if (this.authService.isLoggedIn()) {
+					<section class="games-section">
+						<div class="section-heading">
+							<div>
+								<span class="section-kicker">YOUR MATCHES</span>
+								<h2>Your games</h2>
+							</div>
+
+							<button (click)="refreshGames()"
+							        [disabled]="loading()"
+							        class="refresh-button"
+							        type="button">
+								Refresh
+							</button>
 						</div>
 
-						<button (click)="refreshGames()"
-						        [disabled]="loading()"
-						        class="refresh-button"
-						        type="button">
-							Refresh
-						</button>
-					</div>
+						@if (!authService.isLoggedIn()) {
+							<div class="empty-state">
+								Log in to see the games linked to your account.
+							</div>
+						} @else if (loading()) {
+							<div class="empty-state">
+								Loading your games...
+							</div>
+						} @else if (createdGames().length === 0) {
+							<div class="empty-state">
+								You do not have any game yet.
+							</div>
+						} @else {
+							<div class="games-list">
+								@for (game of createdGames(); track game.uuid) {
+									<button (click)="openPlayerGame(game)"
+									        class="game-row"
+									        type="button">
 
-					@if (!authService.isLoggedIn()) {
-						<div class="empty-state">
-							Log in to see the games linked to your account.
-						</div>
-					} @else if (loading()) {
-						<div class="empty-state">
-							Loading your games...
-						</div>
-					} @else if (createdGames().length === 0) {
-						<div class="empty-state">
-							You do not have any game yet.
-						</div>
-					} @else {
-						<div class="games-list">
-							@for (game of createdGames(); track game.uuid) {
-								<button (click)="openPlayerGame(game)"
-								        class="game-row"
-								        type="button">
+										<div class="game-main">
+											<strong>{{ game.gameType | enumFormat:'title' }}</strong>
+											<span class="game-uuid selectable">{{ game.uuid }}</span>
+										</div>
 
-									<div class="game-main">
-										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
-										<span class="game-uuid selectable">{{ game.uuid }}</span>
-									</div>
-
-									<div class="game-meta">
+										<div class="game-meta">
 										<span>
 											{{ game.players.length }}
 											player{{ game.players.length === 1 ? '' : 's' }}
 										</span>
 
-										<span class="status-badge">
+											<span class="status-badge">
 											{{ game.status | enumFormat:'title' }}
 										</span>
-									</div>
+										</div>
 
-									<span class="row-action">
+										<span class="row-action">
 										Open
 
 										<app-icon [rotation]="180"
@@ -213,11 +214,12 @@
 										          name="arrow">
 										</app-icon>
 									</span>
-								</button>
-							}
-						</div>
-					}
-				</section>
+									</button>
+								}
+							</div>
+						}
+					</section>
+				}
 
 				<section class="games-section">
 					<div class="section-heading">
@@ -238,10 +240,10 @@
 					} @else {
 						<div class="games-list">
 							@for (game of publicGames(); track game.uuid) {
-								<button type="button"
-									class="game-row"
-									[disabled]="actionLoading()"
-									(click)="joinGame(game.uuid)">
+								<button (click)="joinGame(game.uuid)"
+								        [disabled]="actionLoading()"
+								        class="game-row"
+								        type="button">
 									<div class="game-main">
 										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
 										<span class="game-uuid selectable">{{ game.uuid }}</span>
@@ -254,7 +256,7 @@
 
 									<span class="row-action">
 										Join
-										<app-icon name="arrow" [rotation]="180" [size]="16"></app-icon>
+										<app-icon [rotation]="180" [size]="16" name="arrow"></app-icon>
 									</span>
 								</button>
 							}
