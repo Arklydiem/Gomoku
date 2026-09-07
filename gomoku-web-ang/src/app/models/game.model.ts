@@ -14,4 +14,5 @@ export interface GameModel {
 	blackCaptures: number;
 	whiteCaptures: number;
 	gameType: GameTypeEnum;
+	publicGame: boolean;
 }

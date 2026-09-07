@@ -178,13 +178,13 @@
 						<div class="empty-state">
 							Loading your games...
 						</div>
-					} @else if (games().length === 0) {
+					} @else if (createdGames().length === 0) {
 						<div class="empty-state">
 							You do not have any game yet.
 						</div>
 					} @else {
 						<div class="games-list">
-							@for (game of games(); track game.uuid) {
+							@for (game of createdGames(); track game.uuid) {
 								<button (click)="openPlayerGame(game)"
 								        class="game-row"
 								        type="button">
@@ -219,14 +219,48 @@
 					}
 				</section>
 
-				<!--				<section class="games-section">-->
-				<!--					<div class="section-heading">-->
-				<!--						<div>-->
-				<!--							<span class="section-kicker">AVAILABLE</span>-->
-				<!--							<h2>Public games</h2>-->
-				<!--						</div>-->
-				<!--					</div>-->
-				<!--				</section>-->
+				<section class="games-section">
+					<div class="section-heading">
+						<div>
+							<span class="section-kicker">AVAILABLE</span>
+							<h2>Public games</h2>
+						</div>
+					</div>
+
+					@if (loading()) {
+						<div class="empty-state">
+							Loading public games...
+						</div>
+					} @else if (publicGames().length === 0) {
+						<div class="empty-state">
+							No public game is currently available.
+						</div>
+					} @else {
+						<div class="games-list">
+							@for (game of publicGames(); track game.uuid) {
+								<button type="button"
+									class="game-row"
+									[disabled]="actionLoading()"
+									(click)="joinGame(game.uuid)">
+									<div class="game-main">
+										<strong>{{ game.gameType | enumFormat:'title' }}</strong>
+										<span class="game-uuid selectable">{{ game.uuid }}</span>
+									</div>
+
+									<div class="game-meta">
+										<span>{{ game.players.length }} player{{ game.players.length === 1 ? '' : 's' }}</span>
+										<span class="status-badge">{{ game.status | enumFormat:'title' }}</span>
+									</div>
+
+									<span class="row-action">
+										Join
+										<app-icon name="arrow" [rotation]="180" [size]="16"></app-icon>
+									</span>
+								</button>
+							}
+						</div>
+					}
+				</section>
 			</section>
 
 			<section class="hub-panel">
@@ -254,13 +288,13 @@
 						<div class="empty-state">
 							Loading games...
 						</div>
-					} @else if (games().length === 0) {
+					} @else if (spectateGames().length === 0) {
 						<div class="empty-state">
 							No game is available to spectate.
 						</div>
 					} @else {
 						<div class="games-list">
-							@for (game of games(); track game.uuid) {
+							@for (game of spectateGames(); track game.uuid) {
 								<button (click)="spectateGame(game)"
 								        class="game-row"
 								        type="button">

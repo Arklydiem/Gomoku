@@ -1,13 +1,11 @@
 import {Routes} from '@angular/router';
 
-import {Home} from './pages/home/home';
-
 import {Login} from './pages/auth/login/login';
 import {Register} from './pages/auth/register/register';
-
-import {Game} from './pages/game/game';
 import {GameHub} from './pages/game/game-hub/game-hub';
-import {GameMatch} from './pages/game/game-match/game-match';
+import {GameLayout} from './pages/game/game-layout/game-layout';
+import {GameRoom} from './pages/game/game-room/game-room';
+import {Home} from './pages/home/home';
 
 export const routes: Routes = [
 	{
@@ -15,7 +13,6 @@ export const routes: Routes = [
 		redirectTo: 'home',
 		pathMatch: 'full',
 	},
-
 	{
 		path: 'home',
 		component: Home,
@@ -23,64 +20,52 @@ export const routes: Routes = [
 			pageOrder: 0,
 		},
 	},
-
 	{
 		path: 'game',
-		component: Game,
+		component: GameLayout,
 		data: {
 			pageOrder: 1,
 		},
-
 		children: [
 			{
 				path: '',
 				redirectTo: 'create',
 				pathMatch: 'full',
 			},
-
 			{
 				path: ':mode',
 				component: GameHub,
-
 				canMatch: [(_route, segments) => segments.length === 1 && ['create', 'join', 'spectate'].includes(segments[0]?.path ?? '')],
 			},
-
 			{
 				path: ':gameUuid/spectate',
-				component: GameMatch,
-
+				component: GameRoom,
 				data: {
 					accessMode: 'spectator',
 				},
 			},
-
 			{
 				path: ':gameUuid',
-				component: GameMatch,
-
+				component: GameRoom,
 				data: {
 					accessMode: 'player',
 				},
 			},
 		],
 	},
-
 	{
 		path: 'auth',
-
 		children: [
 			{
 				path: 'login',
 				component: Login,
 			},
-
 			{
 				path: 'register',
 				component: Register,
 			},
 		],
 	},
-
 	{
 		path: '**',
 		redirectTo: 'home',

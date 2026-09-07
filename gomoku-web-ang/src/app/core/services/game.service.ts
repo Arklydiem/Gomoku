@@ -11,19 +11,23 @@ import {GameResource} from '../resources/game.resource';
 export class GameService {
 	private readonly gameResource = inject(GameResource);
 
-	public getGames() {
+	public getGames(): Observable<GameModel[]> {
 		return this.gameResource.getGames();
 	}
 
-	public getGamesCreatedByMe() {
+	public getPublicGames(): Observable<GameModel[]> {
+		return this.gameResource.getPublicGames();
+	}
+
+	public getGamesCreatedByMe(): Observable<GameModel[]> {
 		return this.gameResource.getGamesCreatedByMe();
 	}
 
-	public getGamesByCreatorUuid(userUuid: string) {
+	public getGamesByCreatorUuid(userUuid: string): Observable<GameModel[]> {
 		return this.gameResource.getGamesByCreatorUuid(userUuid);
 	}
 
-	public getGame(gameId: string) {
+	public getGame(gameId: string): Observable<GameModel> {
 		return this.gameResource.getGame(gameId);
 	}
 
@@ -31,8 +35,12 @@ export class GameService {
 		return this.gameResource.createGame(gameType);
 	}
 
-	public joinGame(gameId: string) {
+	public joinGame(gameId: string): Observable<GameModel> {
 		return this.gameResource.joinGame(gameId);
+	}
+
+	public updateVisibility(gameId: string, publicGame: boolean): Observable<GameModel> {
+		return this.gameResource.updateVisibility(gameId, publicGame);
 	}
 
 	public startGame(gameId: string): Observable<GameModel> {

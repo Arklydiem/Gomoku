@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
 import {GameModel} from '../../models/game.model';
-import {GamesUuidsModel} from '../../models/games-uuids.model';
 import {MoveModel} from '../../models/move.model';
 import {ApiResource} from '../config/api-resource';
 
@@ -10,10 +9,17 @@ import {ApiResource} from '../config/api-resource';
 	providedIn: 'root',
 })
 export class GameResource extends ApiResource {
-	public getGames(): Observable<GamesUuidsModel> {
-		return this.request<GamesUuidsModel>({
+	public getGames(): Observable<GameModel[]> {
+		return this.request<GameModel[]>({
 			method: 'GET',
 			path: '/games',
+		});
+	}
+
+	public getPublicGames(): Observable<GameModel[]> {
+		return this.request<GameModel[]>({
+			method: 'GET',
+			path: '/games/public',
 		});
 	}
 
@@ -68,6 +74,17 @@ export class GameResource extends ApiResource {
 			},
 			{gameUuid},
 			null,
+		);
+	}
+
+	public updateVisibility(gameUuid: string, publicGame: boolean): Observable<GameModel> {
+		return this.request<GameModel>(
+			{
+				method: 'PATCH',
+				path: '/games/{gameUuid}/visibility',
+			},
+			{gameUuid},
+			{publicGame},
 		);
 	}
 

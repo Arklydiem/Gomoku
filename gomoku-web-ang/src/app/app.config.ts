@@ -1,8 +1,10 @@
 import {ApplicationConfig, provideBrowserGlobalErrorListeners} from '@angular/core';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
 
 import {ActivatedRouteSnapshot, provideRouter, withComponentInputBinding, withViewTransitions} from '@angular/router';
 
 import {routes} from './app.routes';
+import {authInterceptor} from './core/config/auth.interceptor';
 
 function getPageOrder(snapshot: ActivatedRouteSnapshot): number | null {
 	let route: ActivatedRouteSnapshot | null = snapshot;
@@ -23,6 +25,7 @@ function getPageOrder(snapshot: ActivatedRouteSnapshot): number | null {
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideBrowserGlobalErrorListeners(),
+		provideHttpClient(withInterceptors([authInterceptor])),
 
 		provideRouter(
 			routes,
