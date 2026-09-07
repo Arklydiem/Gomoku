@@ -58,6 +58,11 @@ public class GameEntity {
             nullable = false
     )
     private int whiteCaptures = 0;
+    @Column(
+            name = "public_game",
+            nullable = false
+    )
+    private boolean publicGame = false;
     @OneToMany(
             mappedBy = "game",
             cascade = CascadeType.ALL,

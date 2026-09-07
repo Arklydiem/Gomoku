@@ -16,5 +16,6 @@ public record GameDto(
 		GameStatus status,
 		int blackCaptures,
 		int whiteCaptures,
-		GameType gameType
+		GameType gameType,
+		boolean publicGame
 ) { }

@@ -1,6 +1,8 @@
 package com.gomoku.coreapi.repository;
 
 import com.gomoku.coreapi.entity.game.GameEntity;
+import com.gomoku.coreapi.enums.GameStatus;
+import com.gomoku.coreapi.enums.GameType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,18 +15,20 @@ import java.util.UUID;
 @Repository
 public interface GameRepository extends JpaRepository<GameEntity, Long> {
 
-    Optional<GameEntity> findByUuid(UUID uuid);
+	Optional<GameEntity> findByUuid(UUID uuid);
 
-    @Query("""
-            SELECT DISTINCT game
-            FROM GameEntity game
-            LEFT JOIN game.createdBy creator
-            LEFT JOIN game.gamePlayers gamePlayer
-            LEFT JOIN gamePlayer.player player
-            WHERE creator.uuid = :userUuid
-               OR player.userUuid = :userUuid
-            """)
-    List<GameEntity> findGamesByUserUuid(@Param("userUuid") UUID userUuid);
+	@Query("""
+			SELECT DISTINCT game
+			FROM GameEntity game
+			LEFT JOIN game.createdBy creator
+			LEFT JOIN game.gamePlayers gamePlayer
+			LEFT JOIN gamePlayer.player player
+			WHERE creator.uuid = :userUuid
+			   OR player.userUuid = :userUuid
+			""")
+	List<GameEntity> findGamesByUserUuid(@Param("userUuid") UUID userUuid);
 
-    List<GameEntity> findAllByCreatedBy_Uuid(UUID userUuid);
+	List<GameEntity> findAllByCreatedBy_Uuid(UUID userUuid);
+
+	List<GameEntity> findAllByPublicGameTrueAndGameTypeAndStatus(GameType gameType, GameStatus status);
 }

@@ -367,4 +367,25 @@
 
     </changeSet>
 
+    <changeSet id="202609071030-add-game-public-flag" author="argomez">
+
+        <addColumn tableName="games">
+            <column name="public_game"
+                    type="BOOLEAN"
+                    defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <createIndex
+                indexName="idx_games_public_game_status"
+                tableName="games">
+
+            <column name="public_game"/>
+            <column name="status"/>
+
+        </createIndex>
+
+    </changeSet>
+
 </databaseChangeLog>
