@@ -1,4 +1,4 @@
-NAME = Gomoku
+NAME = Gomoku   
 
 DOCKER_COMPOSE = docker compose
 CORE_API = gomoku-core-api
